@@ -198,7 +198,7 @@ cJSON* NormalDecl::createJSONObj(){
     cJSON_AddStringToObject(this->this_obj, "node_name", "NormalDecl");
 
     TraversalItem<Identifier>(this->this_obj, this->name_list, "name_list_decl");
-    TraversalItem<TypeDecl>(this->this_obj, this->type_decl, "type_decl");
+    cJSON_AddItemToObject(this->this_obj, "type_decl", this->type_decl->createJSONObj());
 
     return this->this_obj;
 }
@@ -422,7 +422,7 @@ cJSON* WhileStatement::createJSONObj(){
     cJSON_AddStringToObject(this->this_obj, "node_name", "WhileStatement");
 
     cJSON_AddItemToObject(this->this_obj, "judge", this->judge_expr->createJSONObj());
-    TraversalItem<Statement>(this->this_obj, this->statement, "statement_list");
+    cJSON_AddItemToObject(this->this_obj, "statement", this->statement->createJSONObj());
     
 
     return this->this_obj;
@@ -444,7 +444,7 @@ cJSON* ForStatement::createJSONObj(){
         break;
     }
 
-    TraversalItem<Statement>(this->this_obj, this->statement, "statement_list");
+    cJSON_AddItemToObject(this->this_obj, "statement", this->statement->createJSONObj());
 
     return this->this_obj;
 }
@@ -474,6 +474,269 @@ cJSON* CaseExpression::createJSONObj(){
         break;
     }
 
-    TraversalItem<Statement>(this->this_obj, this->statement, "statement_list");
+    cJSON_AddItemToObject(this->this_obj, "statement", this->statement->createJSONObj());
+    return this->this_obj;
+}
+
+cJSON* Procedure::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "Procedure");
+
+    cJSON_AddItemToObject(this->this_obj, "id", this->id->createJSONObj());
+    TraversalItem<Expression>(this->this_obj, this->arg_list, "arg_list");
+
+    return this->this_obj;
+}
+
+cJSON* SystemProcedure::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "SystemProcedure");
+
+
+    switch (this->proc)
+    {
+    case Sys_Proc::WRITE:
+        cJSON_AddStringToObject(this->this_obj, "id", "WRITE");
+        break;
+    case Sys_Proc::WRITELN:
+        cJSON_AddStringToObject(this->this_obj, "id", "WRITELN");
+        break;
+    default:
+        break;
+    }
+    TraversalItem<Expression>(this->this_obj, this->arg_list, "arg_list");
+
+    return this->this_obj;
+}
+
+cJSON* ReadProcedure::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "ReadProcedure");
+    cJSON_AddItemToObject(this->this_obj, "factor", this->value->createJSONObj());
+
+    return this->this_obj;
+}
+
+cJSON* ProcStatement::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "ProcStatement");
+
+
+    switch (this->flag)
+    {
+    case ProcStatement::PROC:
+        cJSON_AddItemToObject(this->this_obj, "normal_proc", this->proc.normal_proc->createJSONObj());
+        break;
+    case ProcStatement::SYS_PROC:
+        cJSON_AddItemToObject(this->this_obj, "sys_proc", this->proc.sys_proc->createJSONObj());
+        break;
+    case ProcStatement::READ_PROC:
+        cJSON_AddItemToObject(this->this_obj, "read_proc", this->proc.read_proc->createJSONObj());
+        break;
+    default:
+        break;
+    }
+
+    return this->this_obj;
+}
+
+cJSON* Expression::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "Expression");
+
+
+    cJSON_AddItemToObject(this->this_obj, "lhs", this->lhs->createJSONObj());
+
+    switch (this->type)
+    {
+    case Expression::GE:
+        cJSON_AddStringToObject(this->this_obj, "type", "GE");
+        break;
+    case Expression::GT:
+        cJSON_AddStringToObject(this->this_obj, "type", "GT");
+        break;
+    case Expression::LE:
+        cJSON_AddStringToObject(this->this_obj, "type", "LE");
+        break;
+    case Expression::LT:
+        cJSON_AddStringToObject(this->this_obj, "type", "LT");
+        break;
+    case Expression::EQUAL:
+        cJSON_AddStringToObject(this->this_obj, "type", "EQUAL");
+        break;
+    case Expression::UNEQUAL:
+        cJSON_AddStringToObject(this->this_obj, "type", "UNEQUAL");
+        break;
+    case Expression::SINGLE:
+        cJSON_AddStringToObject(this->this_obj, "type", "SINGLE");
+        break;
+    default:
+        break;
+    }
+    cJSON_AddItemToObject(this->this_obj, "rhs", this->rhs->createJSONObj());
+
+    return this->this_obj;
+}
+
+cJSON* Expr::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "Expr");
+
+
+    cJSON_AddItemToObject(this->this_obj, "lhs", this->lhs->createJSONObj());
+
+    switch (this->type)
+    {
+    case Expr::PLUS:
+        cJSON_AddStringToObject(this->this_obj, "type", "PLUS");
+        break;
+    case Expr::MINUS:
+        cJSON_AddStringToObject(this->this_obj, "type", "MINUS");
+        break;
+    case Expr::OR:
+        cJSON_AddStringToObject(this->this_obj, "type", "OR");
+        break;
+    case Expr::SINGLE:
+        cJSON_AddStringToObject(this->this_obj, "type", "SINGLE");
+        break;
+    default:
+        break;
+    }
+    cJSON_AddItemToObject(this->this_obj, "rhs", this->rhs->createJSONObj());
+
+    return this->this_obj;
+}
+
+cJSON* Term::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "Term");
+
+
+    cJSON_AddItemToObject(this->this_obj, "lhs", this->lhs->createJSONObj());
+
+    switch (this->type)
+    {
+    case Term::MUL:
+        cJSON_AddStringToObject(this->this_obj, "type", "MUL");
+        break;
+    case Term::DIV:
+        cJSON_AddStringToObject(this->this_obj, "type", "DIV");
+        break;
+    case Term::MOD:
+        cJSON_AddStringToObject(this->this_obj, "type", "MOD");
+        break;
+    case Term::AND:
+        cJSON_AddStringToObject(this->this_obj, "type", "AND");
+        break;
+    case Term::SINGLE:
+        cJSON_AddStringToObject(this->this_obj, "type", "SINGLE");
+        break;
+    default:
+        break;
+    }
+    cJSON_AddItemToObject(this->this_obj, "rhs", this->rhs->createJSONObj());
+
+    return this->this_obj;
+}
+
+cJSON* Factor::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "Factor");
+
+    switch (this->flag)
+    {
+    case Factor::NAME:
+        cJSON_AddItemToObject(this->this_obj, "name_factor", this->factor.name_factor->createJSONObj());
+        break;
+    case Factor::FUNC:
+        cJSON_AddItemToObject(this->this_obj, "func_factor", this->factor.func_factor->createJSONObj());
+        break;
+    case Factor::SYS_FUNC:
+        cJSON_AddItemToObject(this->this_obj, "sys_func_factor", this->factor.sys_func_factor->createJSONObj());
+        break;
+    case Factor::CONST:
+        cJSON_AddItemToObject(this->this_obj, "const_factor", this->factor.const_factor->createJSONObj());
+        break;
+    case Factor::EXPR:
+        cJSON_AddItemToObject(this->this_obj, "expr_factor", this->factor.expr_factor->createJSONObj());
+        break;
+    case Factor::AT:
+        cJSON_AddItemToObject(this->this_obj, "at_factor", this->factor.at_factor->createJSONObj());
+        break;
+    case Factor::GET:
+        cJSON_AddItemToObject(this->this_obj, "get_factor", this->factor.get_factor->createJSONObj());
+        break;
+    case Factor::NOT:
+        cJSON_AddItemToObject(this->this_obj, "not_factor", this->factor.not_factor->createJSONObj());
+        break;
+    case Factor::MINUS:
+        cJSON_AddItemToObject(this->this_obj, "minus_factor", this->factor.minus_factor->createJSONObj());
+        break;
+    default:
+        break;
+    }
+
+    return this->this_obj;
+}
+
+cJSON* NotFactor::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "NotFactor");
+
+    cJSON_AddItemToObject(this->this_obj, "factor", this->factor->createJSONObj());
+    return this->this_obj;
+}
+
+cJSON* MinusFactor::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "MinusFactor");
+
+    cJSON_AddItemToObject(this->this_obj, "factor", this->factor->createJSONObj());
+    return this->this_obj;
+}
+
+cJSON* AtOperation::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "AtOperation");
+
+    cJSON_AddItemToObject(this->this_obj, "array_id", this->array_id->createJSONObj());
+    cJSON_AddItemToObject(this->this_obj, "index_expr", this->index_expr->createJSONObj());
+    return this->this_obj;
+}
+
+cJSON* GetOperation::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "GetOperation");
+
+    cJSON_AddItemToObject(this->this_obj, "record_id", this->record_id->createJSONObj());
+    cJSON_AddItemToObject(this->this_obj, "field_id", this->field_id->createJSONObj());
+    return this->this_obj;
+}
+
+cJSON* FunctionCall::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "FunctionCall");
+
+    cJSON_AddItemToObject(this->this_obj, "func_name", this->func_name->createJSONObj());
+    TraversalItem<Expression>(this->this_obj, this->args, "args");
+    return this->this_obj;
+}
+
+cJSON* SysFuncCall::createJSONObj(){
+    this->this_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(this->this_obj, "node_name", "SysFuncCall");
+
+    switch (this->sys_func)
+    {
+    case Sys_Proc::WRITE:
+        cJSON_AddStringToObject(this->this_obj, "id", "WRITE");
+        break;
+    case Sys_Proc::WRITELN:
+        cJSON_AddStringToObject(this->this_obj, "id", "WRITELN");
+        break;
+    default:
+        break;
+    }
+    TraversalItem<Expression>(this->this_obj, this->args, "args");
     return this->this_obj;
 }

@@ -101,16 +101,18 @@ using NameList = Identifier*;
 
 struct FunctionCall: public AbstractNode{
     Identifier* func_name;
-    Expression* args;
+    ExpressionList args;
     FunctionCall(Identifier* n, Expression* a): func_name(n), args(a){};
     FunctionCall() = default;
+    cJSON* createJSONObj();
 };
 
 struct SysFuncCall: public AbstractNode{
     Sys_Funct sys_func;
-    Expression* args;
+    ExpressionList args;
     SysFuncCall(Sys_Funct f, Expression* a): sys_func(f), args(a){};
     SysFuncCall() = default;
+    cJSON* createJSONObj();
 };
 
 struct AtOperation: public AbstractNode{
@@ -119,6 +121,7 @@ struct AtOperation: public AbstractNode{
 
     AtOperation(Identifier* id, Expression* idx): array_id(id), index_expr(idx){};
     AtOperation() = default;
+    cJSON* createJSONObj();
 };
 
 struct GetOperation: public AbstractNode{
@@ -127,21 +130,25 @@ struct GetOperation: public AbstractNode{
 
     GetOperation(Identifier* rec, Identifier* field): record_id(rec), field_id(field){};
     GetOperation() = default;
+
+    cJSON* createJSONObj();
 };
 
 struct NotFactor: public AbstractNode{
     Factor* factor;
     NotFactor(Factor* f): factor(f){};
     NotFactor() = default;
+    cJSON* createJSONObj();
 };
 
 struct MinusFactor: public AbstractNode{
     Factor* factor;
     MinusFactor(Factor* f): factor(f){};
     MinusFactor() = default;
+    cJSON* createJSONObj();
 };
 
-struct Factor{
+struct Factor: public AbstractNode{
     union {
         Identifier* name_factor;
         FunctionCall* func_factor;
@@ -165,6 +172,7 @@ struct Factor{
         NOT,
         MINUS
     } flag;
+    cJSON* createJSONObj();
 };
 
 struct Term: public AbstractNode{
@@ -179,6 +187,7 @@ struct Term: public AbstractNode{
     } type;
     Term(Term* l, Factor* r, Type t): lhs(l), rhs(r), type(t){};
     Term() = default;
+    cJSON* createJSONObj();
 };
 
 struct Expr: public AbstractNode{
@@ -192,6 +201,7 @@ struct Expr: public AbstractNode{
     } type;
     Expr(Expr* l, Term* r, Type t):lhs(l), rhs(r), type(t){};
     Expr() = default;
+    cJSON* createJSONObj();
 };
 
 struct Expression: public AbstractNode{
@@ -208,6 +218,8 @@ struct Expression: public AbstractNode{
     } type;
     Expression(Expression* l, Expr* r, Type t): lhs(l), rhs(r), type(t){};
     Expression() = default;
+
+    cJSON* createJSONObj();
 };
 
 using ExpressionList = Expression*;
@@ -268,7 +280,7 @@ struct IfStatement: public AbstractNode{
 };
 
 struct RepeatStatement: public AbstractNode{
-    Statement* repeat_list;
+    StatementList repeat_list;
     Expression* until_expr;
     RepeatStatement(Statement* r, Expression* u): repeat_list(r), until_expr(u){};
     RepeatStatement() = default;
@@ -321,9 +333,11 @@ struct CaseExpression: public AbstractNode{
     cJSON* createJSONObj();
 };
 
+using CaseExpressionList = CaseExpression*;
+
 struct CaseStatement: public AbstractNode{
     Expression* judge_expression;
-    CaseExpression* case_list;
+    CaseExpressionList case_list;
     CaseStatement(Expression* j, CaseExpression* c): judge_expression(j), case_list(c){};
     CaseStatement() = default;
 
@@ -335,6 +349,8 @@ struct Procedure: public AbstractNode{
     ExpressionList arg_list;
     Procedure(Identifier* i, ExpressionList a): id(i), arg_list(a) {};
     Procedure() = default;
+
+    cJSON* createJSONObj();
 };
 
 struct SystemProcedure: public AbstractNode{
@@ -342,15 +358,19 @@ struct SystemProcedure: public AbstractNode{
     ExpressionList arg_list;
     SystemProcedure(Sys_Proc p, ExpressionList a): proc(p), arg_list(a){};
     SystemProcedure() = default;
+
+    cJSON* createJSONObj();
 };
 
 struct ReadProcedure: public AbstractNode{
     Factor* value;
     ReadProcedure(Factor* v): value(v){};
     ReadProcedure() = default;
+
+    cJSON* createJSONObj();
 };
 
-struct ProcStatement{
+struct ProcStatement: public AbstractNode{
     union{
         Procedure* normal_proc;
         SystemProcedure* sys_proc;
@@ -362,6 +382,8 @@ struct ProcStatement{
         SYS_PROC,
         READ_PROC
     } flag;
+
+    cJSON* createJSONObj();
 };
 
 struct NonLabelStatement: public AbstractNode{
@@ -401,8 +423,10 @@ struct Statement: public AbstractNode{
     cJSON* createJSONObj();
 };
 
+using StatementList = Statement*;
+
 struct CompoundStatement: public AbstractNode{
-    Statement* list;
+    StatementList list;
     CompoundStatement(Statement* l): list(l){};
     CompoundStatement() = default;
 
@@ -430,8 +454,10 @@ struct NormalDecl: public AbstractNode{
     cJSON* createJSONObj();
 };
 
+using NormalDeclList = NormalDecl*;
+
 struct RecordTypeDecl: public AbstractNode{
-    NormalDecl* field_decl_list;
+    NormalDeclList field_decl_list;
     RecordTypeDecl(NormalDecl* f): field_decl_list(f){};
     RecordTypeDecl() = default;
 
@@ -528,9 +554,11 @@ struct ParaTypeList: public AbstractNode{
     cJSON* createJSONObj();
 };
 
+using Params = ParaTypeList*;
+
 struct FunctionHead: public AbstractNode{
     Identifier* func_name;
-    ParaTypeList* params;
+    Params params;
     SimpleTypeDecl* ret;
     FunctionHead() = default;
     FunctionHead(Identifier* f, ParaTypeList* p, SimpleTypeDecl* r): func_name(f), params(p), ret(r){};
@@ -548,7 +576,7 @@ struct FunctionDecl: public AbstractNode{
 
 struct ProcedureHead: public AbstractNode{
     Identifier* func_name;
-    ParaTypeList* params;
+    Params params;
     ProcedureHead() = default;
     ProcedureHead(Identifier* f, ParaTypeList* p): func_name(f), params(p){};
 
