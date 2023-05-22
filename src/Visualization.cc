@@ -14,4 +14,5 @@ void Visualization(Program* p, const char* file_name){
     std::ofstream os(file_name);
     os << cJSON_Print(obj);
     os.close();
+    cJSON_Delete(obj);
 }

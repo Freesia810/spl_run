@@ -122,7 +122,7 @@ program: program_head routine DOT   { $$ = new Program($1, $2); syntax_root = $$
 program_head: PROGRAM IDENTIFIER SEMI   { $$ = new ProgramId(); strcpy($$->id, $2); }
                                         ;
 
-routine: routine_head routine_body  { $$ = new Routine($1, $2); }
+routine: routine_head routine_body  { $$ = new Routine($1, $2, true); }
                                     ;
 
 routine_head: const_part  type_part  var_part  routine_part { $$ = new RoutineHead(nullptr, $1, $2, $3, $4); }
@@ -346,7 +346,7 @@ var_para_list : VAR  name_list  { $$ = $2; }
 val_para_list : name_list   { $$ = $1; }
                             ;
 
-sub_routine : routine_head  routine_body    { $$ = new Routine($1, $2); }
+sub_routine : routine_head  routine_body    { $$ = new Routine($1, $2, false); }
                                             ;
 
 routine_body : compound_stmt    { $$ = $1; }

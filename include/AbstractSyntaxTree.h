@@ -1,8 +1,10 @@
 #pragma once
 
+
 #include <algorithm>
 #include <malloc.h>
 #include <cstring>
+#include "generator/IRGenerator.h"
 #include "cJSON.h"
 #define ARRAY_SIZE(p) malloc_usable_size(p) / sizeof(p[0])
 
@@ -45,6 +47,7 @@ struct AbstractNode{
     char description[64];
     cJSON* this_obj;
     virtual cJSON* createJSONObj(){ return nullptr; };
+    virtual void generateIR(IRGenerator*){};
 };
 
 enum Sys_Con{
@@ -611,9 +614,11 @@ struct CallDecl: public AbstractNode
 struct Routine: public AbstractNode{
     RoutineHead* routine_head;
     CompoundStatement* routine_body;
+    bool isGlobal;
     Routine() = default;
-    Routine(RoutineHead* h, CompoundStatement* b): routine_head(h), routine_body(b){};
+    Routine(RoutineHead* h, CompoundStatement* b, bool bo): routine_head(h), routine_body(b), isGlobal(bo){};
     cJSON* createJSONObj() override;
+    void generateIR(IRGenerator* ir);
 };
 
 struct ProgramId: public AbstractNode{
@@ -627,5 +632,6 @@ struct Program: public AbstractNode{
     Program() = default;
     Program(ProgramId* i, Routine* r): program_id(i), routine(r){};
     cJSON* createJSONObj() override;
+    void generateIR(IRGenerator* ir);
 };
 

@@ -1,6 +1,13 @@
 #include "AbstractSyntaxTree.h"
 #include "cJSON.h"
 #include <string>
+#include "generator/IRGenerator.h"
+#include "llvm/IR/BasicBlock.h"
+#include "llvm/IR/Function.h"
+#include "llvm/IR/IRBuilder.h"
+#include "llvm/IR/LLVMContext.h"
+#include "llvm/IR/Module.h"
+#include "llvm/IR/Verifier.h"
 
 cJSON* Program::createJSONObj(){
     this->this_obj = cJSON_CreateObject();
@@ -753,11 +760,29 @@ cJSON* SysFuncCall::createJSONObj(){
 
     switch (this->sys_func)
     {
-    case Sys_Proc::WRITE:
-        cJSON_AddStringToObject(this->this_obj, "id", "WRITE");
+    case Sys_Funct::ABS:
+        cJSON_AddStringToObject(this->this_obj, "id", "abs");
         break;
-    case Sys_Proc::WRITELN:
-        cJSON_AddStringToObject(this->this_obj, "id", "WRITELN");
+    case Sys_Funct::CHR:
+        cJSON_AddStringToObject(this->this_obj, "id", "chr");
+        break;
+    case Sys_Funct::ODD:
+        cJSON_AddStringToObject(this->this_obj, "id", "odd");
+        break;
+    case Sys_Funct::ORD:
+        cJSON_AddStringToObject(this->this_obj, "id", "ord");
+        break;
+    case Sys_Funct::PRED:
+        cJSON_AddStringToObject(this->this_obj, "id", "pred");
+        break;
+    case Sys_Funct::SQR:
+        cJSON_AddStringToObject(this->this_obj, "id", "sqr");
+        break;
+    case Sys_Funct::SQRT:
+        cJSON_AddStringToObject(this->this_obj, "id", "sqrt");
+        break;
+    case Sys_Funct::SUCC:
+        cJSON_AddStringToObject(this->this_obj, "id", "succ");
         break;
     default:
         break;
@@ -765,4 +790,34 @@ cJSON* SysFuncCall::createJSONObj(){
     if(this->args != nullptr)
         TraversalItem<Expression>(this->this_obj, this->args, "args");
     return this->this_obj;
+}
+
+void Program::generateIR(IRGenerator* ir){
+    ir->GetModulePt() = new llvm::Module(this->program_id->id, ir->GetContext());
+
+    //main
+    llvm::Type* intType = llvm::Type::getInt32Ty(ir->GetContext());
+    llvm::FunctionType* functionType = llvm::FunctionType::get(intType, false);
+    llvm::Function* function = llvm::Function::Create(functionType, llvm::GlobalValue::ExternalLinkage, "main", ir->GetModulePt());
+    assert(!llvm::verifyFunction(*function));
+
+    //push
+    ir->PushFuncStack(function);
+    
+    //entrypoint
+    ir->GetBuilder().SetInsertPoint(llvm::BasicBlock::Create(ir->GetContext(), "entrypoint", function, nullptr));
+
+    this->routine->generateIR(ir);
+
+    //return
+    llvm::ConstantInt* zero = ir->GetBuilder().getInt32(0);
+    ir->GetBuilder().CreateRet(zero);
+
+    //pop
+    ir->PopFuncStack();
+}
+
+void Routine::generateIR(IRGenerator* ir){
+    this->routine_head->generateIR(ir);
+    this->routine_body->generateIR(ir);
 }
