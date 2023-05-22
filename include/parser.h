@@ -119,7 +119,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 17 "/home/freesia/spl_run/parser/SyntaxAnalysis.y"
+#line 17 "/home/freesia/spl_run/src/parser/SyntaxAnalysis.y"
 
     int int_value;
     double real_value;

@@ -42,7 +42,7 @@ void TraversalItem(cJSON* obj, T* p, const char* des){
 struct AbstractNode{
     char description[64];
     cJSON* this_obj;
-    virtual cJSON* createJSONObj(){};
+    virtual cJSON* createJSONObj(){ return nullptr; };
 };
 
 enum Sys_Con{
@@ -73,6 +73,11 @@ enum Sys_Type{
     SYS_INTEGER,
     SYS_REAL
 };
+struct Statement;
+struct Expression;
+
+using StatementList = Statement*;
+using ExpressionList = Expression*;
 
 struct ConstValue : public AbstractNode{
     union {
@@ -221,8 +226,6 @@ struct Expression: public AbstractNode{
 
     cJSON* createJSONObj();
 };
-
-using ExpressionList = Expression*;
 
 struct NormalAssignment: public AbstractNode{
     Identifier* id;
@@ -422,8 +425,6 @@ struct Statement: public AbstractNode{
 
     cJSON* createJSONObj();
 };
-
-using StatementList = Statement*;
 
 struct CompoundStatement: public AbstractNode{
     StatementList list;

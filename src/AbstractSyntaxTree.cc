@@ -2,8 +2,6 @@
 #include "cJSON.h"
 #include <string>
 
-
-
 cJSON* Program::createJSONObj(){
     this->this_obj = cJSON_CreateObject();
     cJSON_AddStringToObject(this->this_obj, "node_name", "Program");
@@ -31,10 +29,14 @@ cJSON* RoutineHead::createJSONObj(){
     this->this_obj = cJSON_CreateObject();
     cJSON_AddStringToObject(this->this_obj, "node_name", "RoutineHead");
 
-    TraversalItem<ConstExprssion>(this->this_obj, this->const_part, "const_expr_list");
-    TraversalItem<TypeDefinition>(this->this_obj, this->type_part, "type_def_list");
-    TraversalItem<NormalDecl>(this->this_obj, this->var_part, "var_decl_list");
-    TraversalItem<CallDecl>(this->this_obj, this->routine_part, "call_decl_list");
+    if(this->const_part != nullptr)
+        TraversalItem<ConstExprssion>(this->this_obj, this->const_part, "const_expr_list");
+    if(this->type_part != nullptr)
+        TraversalItem<TypeDefinition>(this->this_obj, this->type_part, "type_def_list");
+    if(this->var_part != nullptr)
+        TraversalItem<NormalDecl>(this->this_obj, this->var_part, "var_decl_list");
+    if(this->routine_part != nullptr)
+        TraversalItem<CallDecl>(this->this_obj, this->routine_part, "call_decl_list");
 
     return this->this_obj;
 }
@@ -128,7 +130,23 @@ cJSON* SimpleTypeDecl::createJSONObj(){
     switch (this->flag)
     {
     case SimpleTypeDecl::SYS_TYPE:
-        cJSON_AddStringToObject(this->this_obj, "decl_type", "sys_decl");
+        switch (this->type_decl.sys_type_decl)
+        {
+        case Sys_Type::SYS_BOOLEAN:
+            cJSON_AddStringToObject(this->this_obj, "decl_type", "sys_boolean");
+            break;
+        case Sys_Type::SYS_CHAR:
+            cJSON_AddStringToObject(this->this_obj, "decl_type", "sys_char");
+            break;
+        case Sys_Type::SYS_INTEGER:
+            cJSON_AddStringToObject(this->this_obj, "decl_type", "sys_integer");
+            break;
+        case Sys_Type::SYS_REAL:
+            cJSON_AddStringToObject(this->this_obj, "decl_type", "sys_real");
+            break;
+        default:
+            break;
+        }
         break;
     case SimpleTypeDecl::NAME:
         cJSON_AddItemToObject(this->this_obj, "name_decl", this->type_decl.name_type_decl->createJSONObj());
@@ -238,7 +256,8 @@ cJSON* FunctionHead::createJSONObj(){
 
     cJSON_AddItemToObject(this->this_obj, "func_name", this->func_name->createJSONObj());
 
-    TraversalItem<ParaTypeList>(this->this_obj, this->params, "params");
+    if(this->params != nullptr)
+        TraversalItem<ParaTypeList>(this->this_obj, this->params, "params");
 
     cJSON_AddItemToObject(this->this_obj, "ret", this->ret->createJSONObj());
 
@@ -271,7 +290,8 @@ cJSON* ProcedureHead::createJSONObj(){
 
     cJSON_AddItemToObject(this->this_obj, "proc_name", this->func_name->createJSONObj());
 
-    TraversalItem<ParaTypeList>(this->this_obj, this->params, "params");
+    if(this->params != nullptr)
+        TraversalItem<ParaTypeList>(this->this_obj, this->params, "params");
 
     return this->this_obj;
 }
@@ -279,8 +299,8 @@ cJSON* ProcedureHead::createJSONObj(){
 cJSON* CompoundStatement::createJSONObj(){
     this->this_obj = cJSON_CreateObject();
     cJSON_AddStringToObject(this->this_obj, "node_name", "CompoundStatement");
-
-    TraversalItem<Statement>(this->this_obj, this->list, "stmt_list");
+    if(this->list != nullptr)
+        TraversalItem<Statement>(this->this_obj, this->list, "stmt_list");
 
     return this->this_obj;
 }
@@ -402,7 +422,8 @@ cJSON* IfStatement::createJSONObj(){
 
     cJSON_AddItemToObject(this->this_obj, "judge", this->judge_expr->createJSONObj());
     cJSON_AddItemToObject(this->this_obj, "s1", this->statement1->createJSONObj());
-    cJSON_AddItemToObject(this->this_obj, "s2", this->statement2->createJSONObj());
+    if(this->statement2 != nullptr)
+        cJSON_AddItemToObject(this->this_obj, "s2", this->statement2->createJSONObj());
 
     return this->this_obj;
 }
@@ -483,7 +504,9 @@ cJSON* Procedure::createJSONObj(){
     cJSON_AddStringToObject(this->this_obj, "node_name", "Procedure");
 
     cJSON_AddItemToObject(this->this_obj, "id", this->id->createJSONObj());
-    TraversalItem<Expression>(this->this_obj, this->arg_list, "arg_list");
+
+    if(this->arg_list != nullptr)
+        TraversalItem<Expression>(this->this_obj, this->arg_list, "arg_list");
 
     return this->this_obj;
 }
@@ -504,7 +527,8 @@ cJSON* SystemProcedure::createJSONObj(){
     default:
         break;
     }
-    TraversalItem<Expression>(this->this_obj, this->arg_list, "arg_list");
+    if(this->arg_list != nullptr)
+        TraversalItem<Expression>(this->this_obj, this->arg_list, "arg_list");
 
     return this->this_obj;
 }
@@ -544,8 +568,8 @@ cJSON* Expression::createJSONObj(){
     this->this_obj = cJSON_CreateObject();
     cJSON_AddStringToObject(this->this_obj, "node_name", "Expression");
 
-
-    cJSON_AddItemToObject(this->this_obj, "lhs", this->lhs->createJSONObj());
+    if(this->lhs != nullptr)
+        cJSON_AddItemToObject(this->this_obj, "lhs", this->lhs->createJSONObj());
 
     switch (this->type)
     {
@@ -582,8 +606,8 @@ cJSON* Expr::createJSONObj(){
     this->this_obj = cJSON_CreateObject();
     cJSON_AddStringToObject(this->this_obj, "node_name", "Expr");
 
-
-    cJSON_AddItemToObject(this->this_obj, "lhs", this->lhs->createJSONObj());
+    if(this->lhs != nullptr)
+        cJSON_AddItemToObject(this->this_obj, "lhs", this->lhs->createJSONObj());
 
     switch (this->type)
     {
@@ -611,8 +635,8 @@ cJSON* Term::createJSONObj(){
     this->this_obj = cJSON_CreateObject();
     cJSON_AddStringToObject(this->this_obj, "node_name", "Term");
 
-
-    cJSON_AddItemToObject(this->this_obj, "lhs", this->lhs->createJSONObj());
+    if(this->lhs != nullptr)
+        cJSON_AddItemToObject(this->this_obj, "lhs", this->lhs->createJSONObj());
 
     switch (this->type)
     {
@@ -718,7 +742,8 @@ cJSON* FunctionCall::createJSONObj(){
     cJSON_AddStringToObject(this->this_obj, "node_name", "FunctionCall");
 
     cJSON_AddItemToObject(this->this_obj, "func_name", this->func_name->createJSONObj());
-    TraversalItem<Expression>(this->this_obj, this->args, "args");
+    if(this->args != nullptr)
+        TraversalItem<Expression>(this->this_obj, this->args, "args");
     return this->this_obj;
 }
 
@@ -737,6 +762,7 @@ cJSON* SysFuncCall::createJSONObj(){
     default:
         break;
     }
-    TraversalItem<Expression>(this->this_obj, this->args, "args");
+    if(this->args != nullptr)
+        TraversalItem<Expression>(this->this_obj, this->args, "args");
     return this->this_obj;
 }

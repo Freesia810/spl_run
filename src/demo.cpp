@@ -4,7 +4,7 @@
 #include <memory>
 #include <iostream>
 #include <string>
-
+#include <fstream>
 #include <stdio.h>
 
 extern FILE *yyin;
@@ -15,8 +15,6 @@ int main(){
     yyin = fopen("test.spl","r");
     yyparse();
 
-
-    printf("%ull", syntax_root->routine);
 
 
     // llvm::SMDiagnostic error;
@@ -31,10 +29,6 @@ int main(){
     // generator.GenerateObjectFile("a");
 
     // generator.GenerateAssemblyFile("a.s");
-
-    for(int i = 0; i < 10; i++){
-        printf("%d", i);
-    }
 
     return 0;
 }

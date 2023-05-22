@@ -1,6 +1,17 @@
 #include "AbstractSyntaxTree.h"
+#include "TargetGenerator.h"
+#include "AbstractSyntaxTree.h"
+#include <llvm/IRReader/IRReader.h>
+#include <memory>
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <stdio.h>
 #include "cJSON.h"
 
-void todo(Program* p){
-    cJSON* obj = cJSON_CreateObject();
+void Visualization(Program* p, const char* file_name){
+    auto obj = p->createJSONObj();
+    std::ofstream os(file_name);
+    os << cJSON_Print(obj);
+    os.close();
 }

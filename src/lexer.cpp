@@ -549,8 +549,8 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
-#line 2 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 1 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
+#line 2 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 #include "AbstractSyntaxTree.h"
 #include "parser.h"
 #include <stdio.h>
@@ -774,7 +774,7 @@ YY_DECL
 		}
 
 	{
-#line 9 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 9 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 
 #line 780 "/home/freesia/spl_run/src/lexer.cpp"
 
@@ -836,12 +836,12 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 10 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 10 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 11 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 11 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { 
                                                             yylval.char_value = yytext[1];
                                                             return CHAR; 
@@ -849,252 +849,252 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 15 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 15 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return SEMI; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 16 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 16 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return LP; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 17 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 17 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return RP; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 18 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 18 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return LB; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 19 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 19 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return RB; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 20 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 20 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return DOTDOT; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 21 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 21 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return DOT; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 22 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 22 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return COMMA; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 23 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 23 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return ASSIGN; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 24 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 24 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return COLON; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 25 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 25 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return MUL; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 26 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 26 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return DIV; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 27 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 27 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return UNEQUAL; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 28 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 28 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return NOT; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 29 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 29 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return PLUS; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 30 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 30 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return MINUS; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 31 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 31 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return GE; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 32 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 32 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return GT; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 33 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 33 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return LE; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 34 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 34 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return LT; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 35 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 35 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return EQUAL; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 36 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 36 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return MOD; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 37 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 37 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return AND; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 38 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 38 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return ARRAY; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 39 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 39 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return SPL_BEGIN; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 40 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 40 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return CASE; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 41 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 41 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return CONST; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 42 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 42 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return DIV; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 43 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 43 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return DO; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 44 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 44 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return DOWNTO; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 45 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 45 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return ELSE; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 46 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 46 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return END; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 47 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 47 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return FOR; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 48 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 48 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return FUNCTION; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 49 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 49 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return GOTO; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 50 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 50 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return IF; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 51 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 51 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return OF; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 52 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 52 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return OR; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 53 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 53 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return PROCEDURE; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 54 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 54 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return PROGRAM; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 55 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 55 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return RECORD; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 56 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 56 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return REPEAT; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 57 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 57 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return THEN; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 58 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 58 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return TO; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 59 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 59 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return TYPE; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 60 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 60 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return UNTIL; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 61 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 61 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return VAR; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 62 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 62 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return WHILE; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 63 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 63 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { return ENDIF; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 65 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 65 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 {
                                                             strcpy(yylval.str_value, yytext);
                                                             return SYS_TYPE; 
@@ -1102,7 +1102,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 70 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 70 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 {
                                                             strcpy(yylval.str_value, yytext);
                                                             return SYS_FUNCT; 
@@ -1110,7 +1110,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 75 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 75 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 {
                                                             strcpy(yylval.str_value, yytext);
                                                             return SYS_CON; 
@@ -1118,7 +1118,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 80 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 80 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { 
                                                             strcpy(yylval.str_value, yytext);
                                                             return SYS_PROC; 
@@ -1126,7 +1126,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 85 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 85 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { 
                                                             strcpy(yylval.str_value, "read");
                                                             return READ; 
@@ -1134,7 +1134,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 90 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 90 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { 
                                                             double tmp;
                                                             sscanf(yytext, "%lf", &tmp);
@@ -1144,7 +1144,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 96 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 96 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 {
                                                             int tmp;
                                                             sscanf(yytext, "%d", &tmp);
@@ -1154,7 +1154,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 103 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 103 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 { 
                                                             strcpy(yylval.str_value, yytext);
                                                             return IDENTIFIER; 
@@ -1162,7 +1162,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 107 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 107 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 ECHO;
 	YY_BREAK
 #line 1169 "/home/freesia/spl_run/src/lexer.cpp"
@@ -2170,5 +2170,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 107 "/home/freesia/spl_run/parser/LexicalAnalysis.l"
+#line 107 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 
