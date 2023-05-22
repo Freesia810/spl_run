@@ -1,4 +1,4 @@
-#include "TargetGenerator.h"
+#include "generator/TargetGenerator.h"
 
 void TargetGenerator::Init()
 {

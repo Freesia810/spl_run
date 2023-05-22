@@ -1,6 +1,6 @@
-#line 2 "/home/freesia/spl_run/src/lexer.cpp"
+#line 2 "/home/freesia/spl_run/src/parser/lexer.cpp"
 
-#line 4 "/home/freesia/spl_run/src/lexer.cpp"
+#line 4 "/home/freesia/spl_run/src/parser/lexer.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -552,12 +552,12 @@ char *yytext;
 #line 1 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 #line 2 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 #include "AbstractSyntaxTree.h"
-#include "parser.h"
+#include "parser/parser.h"
 #include <stdio.h>
 #include <cstring>
 extern "C" int yywrap() {return 1;}
-#line 560 "/home/freesia/spl_run/src/lexer.cpp"
-#line 561 "/home/freesia/spl_run/src/lexer.cpp"
+#line 560 "/home/freesia/spl_run/src/parser/lexer.cpp"
+#line 561 "/home/freesia/spl_run/src/parser/lexer.cpp"
 
 #define INITIAL 0
 
@@ -776,7 +776,7 @@ YY_DECL
 	{
 #line 9 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 
-#line 780 "/home/freesia/spl_run/src/lexer.cpp"
+#line 780 "/home/freesia/spl_run/src/parser/lexer.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1165,7 +1165,7 @@ YY_RULE_SETUP
 #line 107 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 ECHO;
 	YY_BREAK
-#line 1169 "/home/freesia/spl_run/src/lexer.cpp"
+#line 1169 "/home/freesia/spl_run/src/parser/lexer.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

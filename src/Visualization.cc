@@ -1,5 +1,5 @@
 #include "AbstractSyntaxTree.h"
-#include "TargetGenerator.h"
+#include "generator/TargetGenerator.h"
 #include "AbstractSyntaxTree.h"
 #include <llvm/IRReader/IRReader.h>
 #include <memory>

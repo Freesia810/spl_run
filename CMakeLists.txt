@@ -9,18 +9,26 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 find_package(BISON)
 find_package(FLEX)
-BISON_TARGET(spl_run_parser ${CMAKE_SOURCE_DIR}/src/parser/SyntaxAnalysis.y ${CMAKE_SOURCE_DIR}/src/parser.cpp
+BISON_TARGET(spl_run_parser ${CMAKE_SOURCE_DIR}/src/parser/SyntaxAnalysis.y ${CMAKE_SOURCE_DIR}/src/parser/parser.cpp
             COMPILE_FLAGS -v
             DEFINES_FILE ${CMAKE_SOURCE_DIR}/include/parser.h
             )
 
-FLEX_TARGET(spl_run_lexer ${CMAKE_SOURCE_DIR}/src/parser/LexicalAnalysis.l ${CMAKE_SOURCE_DIR}/src/lexer.cpp)
+FLEX_TARGET(spl_run_lexer ${CMAKE_SOURCE_DIR}/src/parser/LexicalAnalysis.l ${CMAKE_SOURCE_DIR}/src/parser/lexer.cpp)
 
 ADD_FLEX_BISON_DEPENDENCY(spl_run_lexer spl_run_parser)
 
 add_library(spl_parser SHARED ${BISON_spl_run_parser_OUTPUTS} ${FLEX_spl_run_lexer_OUTPUTS})
 
-add_executable(demo ${CMAKE_SOURCE_DIR}/src/demo.cpp ${CMAKE_SOURCE_DIR}/src/TargetGenerator.cc ${CMAKE_SOURCE_DIR}/src/AbstractSyntaxTree.cc)
+set(
+    SOURCES_FILE
+    ${CMAKE_SOURCE_DIR}/src/generator/TargetGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/AbstractSyntaxTree.cc
+    ${CMAKE_SOURCE_DIR}/src/Visualization.cc
+    ${CMAKE_SOURCE_DIR}/src/demo.cc
+)
+
+add_executable(demo ${SOURCES_FILE})
 target_include_directories(demo PUBLIC /usr/include/llvm-14/ /usr/include/llvm-c-14/)
 target_link_directories(demo PUBLIC /usr/lib/llvm-14/lib/ ${CMAKE_SOURCE_DIR}/lib)
 target_link_libraries(demo LLVM spl_parser cjson)

@@ -1,4 +1,4 @@
-#include "TargetGenerator.h"
+#include "generator/TargetGenerator.h"
 #include "AbstractSyntaxTree.h"
 #include <llvm/IRReader/IRReader.h>
 #include <memory>
@@ -10,10 +10,15 @@
 extern FILE *yyin;
 extern int yyparse();
 extern Program* syntax_root;
+extern void Visualization(Program* p, const char* file_name);
 
-int main(){
+
+int main(int argc,char *argv[]){
+
     yyin = fopen("test.spl","r");
     yyparse();
+
+    Visualization(syntax_root, "test.json");
 
 
 
