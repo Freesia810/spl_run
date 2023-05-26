@@ -19,6 +19,7 @@ FLEX_TARGET(spl_run_lexer ${CMAKE_SOURCE_DIR}/src/parser/LexicalAnalysis.l ${CMA
 ADD_FLEX_BISON_DEPENDENCY(spl_run_lexer spl_run_parser)
 
 add_library(spl_parser SHARED ${BISON_spl_run_parser_OUTPUTS} ${FLEX_spl_run_lexer_OUTPUTS})
+target_include_directories(spl_parser PUBLIC /usr/include/llvm-14/ /usr/include/llvm-c-14/)
 
 set(
     SOURCES_FILE

@@ -1673,7 +1673,7 @@ yyreduce:
 
   case 4: /* routine: routine_head routine_body  */
 #line 125 "/home/freesia/spl_run/src/parser/SyntaxAnalysis.y"
-                                    { (yyval.routine) = new Routine((yyvsp[-1].routine_head), (yyvsp[0].routine_body)); }
+                                    { (yyval.routine) = new Routine((yyvsp[-1].routine_head), (yyvsp[0].routine_body), true); }
 #line 1678 "/home/freesia/spl_run/src/parser/parser.cpp"
     break;
 
@@ -2085,7 +2085,7 @@ yyreduce:
 
   case 56: /* sub_routine: routine_head routine_body  */
 #line 349 "/home/freesia/spl_run/src/parser/SyntaxAnalysis.y"
-                                            { (yyval.routine) = new Routine((yyvsp[-1].routine_head), (yyvsp[0].routine_body)); }
+                                            { (yyval.routine) = new Routine((yyvsp[-1].routine_head), (yyvsp[0].routine_body), false); }
 #line 2090 "/home/freesia/spl_run/src/parser/parser.cpp"
     break;
 

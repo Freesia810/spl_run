@@ -1,6 +1,6 @@
 %{
 #include "AbstractSyntaxTree.h"
-#include "parser/parser.h"
+#include "parser.h"
 #include <stdio.h>
 #include <cstring>
 extern "C" int yywrap() {return 1;}

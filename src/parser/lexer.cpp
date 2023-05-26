@@ -552,7 +552,7 @@ char *yytext;
 #line 1 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 #line 2 "/home/freesia/spl_run/src/parser/LexicalAnalysis.l"
 #include "AbstractSyntaxTree.h"
-#include "parser/parser.h"
+#include "parser.h"
 #include <stdio.h>
 #include <cstring>
 extern "C" int yywrap() {return 1;}
