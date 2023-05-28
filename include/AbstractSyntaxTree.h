@@ -3,10 +3,12 @@
 
 #include <algorithm>
 #include <malloc.h>
+#include <cmath>
 #include <cstring>
 #include "generator/IRGenerator.h"
 #include "cJSON.h"
 #define ARRAY_SIZE(p) malloc_usable_size(p) / sizeof(p[0])
+#define INT32_MAX 2147483647
 
 struct Expression;
 struct Factor;
@@ -100,11 +102,13 @@ struct ConstValue : public AbstractNode{
     } flag;
 
     cJSON* createJSONObj();
+    llvm::Constant* getLLVMValue(IRGenerator*);
 };
 
 struct Identifier : public AbstractNode{
     char buffer[64];
     cJSON* createJSONObj();
+    llvm::Value* getLLVMValue(IRGenerator*);
 };
 
 using NameList = Identifier*;
@@ -115,6 +119,7 @@ struct FunctionCall: public AbstractNode{
     FunctionCall(Identifier* n, Expression* a): func_name(n), args(a){};
     FunctionCall() = default;
     cJSON* createJSONObj();
+    llvm::Value* getLLVMValue(IRGenerator*);
 };
 
 struct SysFuncCall: public AbstractNode{
@@ -123,6 +128,7 @@ struct SysFuncCall: public AbstractNode{
     SysFuncCall(Sys_Funct f, Expression* a): sys_func(f), args(a){};
     SysFuncCall() = default;
     cJSON* createJSONObj();
+    llvm::Value* getLLVMValue(IRGenerator*);
 };
 
 struct AtOperation: public AbstractNode{
@@ -132,6 +138,7 @@ struct AtOperation: public AbstractNode{
     AtOperation(Identifier* id, Expression* idx): array_id(id), index_expr(idx){};
     AtOperation() = default;
     cJSON* createJSONObj();
+    llvm::Value* getLLVMValue(IRGenerator*);
 };
 
 struct GetOperation: public AbstractNode{
@@ -142,6 +149,7 @@ struct GetOperation: public AbstractNode{
     GetOperation() = default;
 
     cJSON* createJSONObj();
+    llvm::Value* getLLVMValue(IRGenerator*);
 };
 
 struct NotFactor: public AbstractNode{
@@ -183,6 +191,7 @@ struct Factor: public AbstractNode{
         MINUS
     } flag;
     cJSON* createJSONObj();
+    llvm::Value* getLLVMValue(IRGenerator*);
 };
 
 struct Term: public AbstractNode{
@@ -198,6 +207,7 @@ struct Term: public AbstractNode{
     Term(Term* l, Factor* r, Type t): lhs(l), rhs(r), type(t){};
     Term() = default;
     cJSON* createJSONObj();
+    llvm::Value* getLLVMValue(IRGenerator*);
 };
 
 struct Expr: public AbstractNode{
@@ -212,6 +222,7 @@ struct Expr: public AbstractNode{
     Expr(Expr* l, Term* r, Type t):lhs(l), rhs(r), type(t){};
     Expr() = default;
     cJSON* createJSONObj();
+    llvm::Value* getLLVMValue(IRGenerator*);
 };
 
 struct Expression: public AbstractNode{
@@ -230,6 +241,7 @@ struct Expression: public AbstractNode{
     Expression() = default;
 
     cJSON* createJSONObj();
+    llvm::Value* getLLVMValue(IRGenerator*);
 };
 
 struct NormalAssignment: public AbstractNode{
@@ -249,6 +261,7 @@ struct ArrayAssignment: public AbstractNode{
     ArrayAssignment() = default;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct RecordAssignment: public AbstractNode{
@@ -259,6 +272,7 @@ struct RecordAssignment: public AbstractNode{
     RecordAssignment() = default;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct AssignStatement: public AbstractNode{
@@ -275,6 +289,7 @@ struct AssignStatement: public AbstractNode{
     } flag;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct IfStatement: public AbstractNode{
@@ -285,6 +300,7 @@ struct IfStatement: public AbstractNode{
     IfStatement() = default;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct RepeatStatement: public AbstractNode{
@@ -294,6 +310,7 @@ struct RepeatStatement: public AbstractNode{
     RepeatStatement() = default;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct WhileStatement: public AbstractNode{
@@ -303,6 +320,7 @@ struct WhileStatement: public AbstractNode{
     WhileStatement() = default;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct ForStatement: public AbstractNode{
@@ -318,6 +336,7 @@ struct ForStatement: public AbstractNode{
     ForStatement(Identifier* i, Expression* s, For_Type t, Expression* e, Statement* x): iter_id(i), start_expr(s), type(t), end_expr(e), statement(x){};
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct GotoStatement: public AbstractNode{
@@ -325,6 +344,7 @@ struct GotoStatement: public AbstractNode{
     GotoStatement(int l): target_label(l){};
     GotoStatement() = default;
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct CaseExpression: public AbstractNode{
@@ -350,6 +370,7 @@ struct CaseStatement: public AbstractNode{
     CaseStatement() = default;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct Procedure: public AbstractNode{
@@ -392,6 +413,7 @@ struct ProcStatement: public AbstractNode{
     } flag;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct NonLabelStatement: public AbstractNode{
@@ -429,6 +451,7 @@ struct Statement: public AbstractNode{
     Statement() = default;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct CompoundStatement: public AbstractNode{
@@ -437,6 +460,7 @@ struct CompoundStatement: public AbstractNode{
     CompoundStatement() = default;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 struct LabelPart: public AbstractNode{
@@ -446,18 +470,22 @@ struct LabelPart: public AbstractNode{
 struct ConstExprssion: public AbstractNode{
     Identifier* name;
     ConstValue* value;
+    bool global{false};
     ConstExprssion(Identifier* n, ConstValue* v): name(n), value(v){};
     ConstExprssion() = default;
+    void generateIR(IRGenerator*) override;
     cJSON* createJSONObj();
 };
 
 struct NormalDecl: public AbstractNode{
     NameList name_list;
     TypeDecl* type_decl;
+    bool global{false};
     NormalDecl(NameList n, TypeDecl* t): name_list(n), type_decl(t){};
     NormalDecl() = default;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 using NormalDeclList = NormalDecl*;
@@ -499,6 +527,7 @@ struct SimpleTypeDecl: public AbstractNode{
         RANGE_TYPE
     } flag;
     cJSON* createJSONObj();
+    llvm::Type* getLLVMType(IRGenerator*, CompoundContext*&);
 };
 
 struct ArrayTypeDecl: public AbstractNode{
@@ -522,14 +551,17 @@ struct TypeDecl: public AbstractNode{
         RECORD
     } flag;
     cJSON* createJSONObj();
+    llvm::Type* getLLVMType(IRGenerator*, CompoundContext*&);
 };
 
 struct TypeDefinition: public AbstractNode{
     Identifier* name;
     TypeDecl* value;
+    bool global{false};
     TypeDefinition(Identifier* n, TypeDecl* v): name(n), value(v){};
     TypeDefinition() = default;
     cJSON* createJSONObj();
+    void generateIR(IRGenerator*) override;
 };
 
 using VarPart = NormalDecl*;
@@ -545,6 +577,8 @@ struct RoutineHead: public AbstractNode{
     RoutinePart routine_part;
     RoutineHead() = default;
     cJSON* createJSONObj() override;
+    void flagGlobal();
+    void generateIR(IRGenerator*) override;
     RoutineHead(LabelPart* l, ConstPart c, TypePart t, VarPart v, RoutinePart r): label_part(l), const_part(c), type_part(t), var_part(v), routine_part(r){};
 };
 
@@ -609,6 +643,7 @@ struct CallDecl: public AbstractNode
     } flag;
 
     cJSON* createJSONObj();
+    void generateIR(IRGenerator* ir);
 };
 
 struct Routine: public AbstractNode{
