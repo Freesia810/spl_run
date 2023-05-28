@@ -5,3 +5,5 @@ build/
 *.s
 *.ll
 *.out
+*.bc
+core.*
