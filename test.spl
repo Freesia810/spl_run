@@ -10,6 +10,8 @@ end
 
 begin
 	k := 100;
+	writeln(k);
 	inner2(k);
+	writeln(k);
 end
 .

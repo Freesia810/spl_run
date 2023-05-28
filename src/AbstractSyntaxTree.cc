@@ -1259,7 +1259,6 @@ void CallDecl::generateIR(IRGenerator* ir){
                         ir->AddVarDef(para_name, this_type, cc, false);
                     }
                     else{
-                        function->addAttributeAtIndex(idx, llvm::Attribute::get(ir->GetContext(), llvm::Attribute::AttrKind::NonNull));
                         ir->GetBuilder().CreateGEP(this_type, arg_iter, ir->GetBuilder().getInt32(0), para_name);
                         ir->AddVarDef(para_name, this_type->getPointerTo(), cc, false);
                     }
@@ -1348,7 +1347,6 @@ void CallDecl::generateIR(IRGenerator* ir){
                         ir->AddVarDef(para_name, this_type, cc, false);
                     }
                     else{
-                        function->addAttributeAtIndex(idx, llvm::Attribute::get(ir->GetContext(), llvm::Attribute::AttrKind::NonNull));
                         ir->GetBuilder().CreateGEP(this_type, arg_iter, ir->GetBuilder().getInt32(0), para_name);
                         ir->AddVarDef(para_name, this_type->getPointerTo(), cc, false);
                     }
@@ -1642,9 +1640,10 @@ llvm::Value* FunctionCall::getLLVMValue(IRGenerator* ir){
     std::vector<llvm::Value*> params;
 
     auto function = ir->GetModulePt()->getFunction(this->func_name->buffer);
+    auto cxt = ir->FindCallContext(this->func_name->buffer);
     auto arg_iter = function->arg_begin();
     for(size_t i = 0; i < ARRAY_SIZE(this->args); i++){
-        if(arg_iter->hasNonNullAttr()){
+        if(cxt->params_context[i]->para_llvm_type->isPointerTy()){
             //ref
             assert(this->args[i].type == Expression::SINGLE 
                 && this->args[i].rhs->type == Expr::SINGLE 
@@ -1869,9 +1868,11 @@ void ProcStatement::generateIR(IRGenerator* ir){
         {
             std::vector<llvm::Value*> params;
             auto function = ir->GetModulePt()->getFunction(this->proc.normal_proc->id->buffer);
+            auto cxt = ir->FindCallContext(this->proc.normal_proc->id->buffer);
+            
             auto arg_iter = function->arg_begin();
             for(size_t i = 0; i < ARRAY_SIZE(this->proc.normal_proc->arg_list); i++){
-                if(arg_iter->hasNonNullAttr()){
+                if(cxt->params_context[i]->para_llvm_type->isPointerTy()){
                     //ref
                     assert(this->proc.normal_proc->arg_list[i].type == Expression::SINGLE 
                         && this->proc.normal_proc->arg_list[i].rhs->type == Expr::SINGLE 

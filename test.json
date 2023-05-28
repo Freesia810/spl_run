@@ -70,12 +70,76 @@
 						"node_name":	"NonLabelStatement",
 						"PROC":	{
 							"node_name":	"ProcStatement",
+							"sys_proc":	{
+								"node_name":	"SystemProcedure",
+								"id":	"WRITELN",
+								"arg_list":	[{
+										"node_name":	"Expression",
+										"type":	"SINGLE",
+										"rhs":	{
+											"node_name":	"Expr",
+											"type":	"SINGLE",
+											"rhs":	{
+												"node_name":	"Term",
+												"type":	"SINGLE",
+												"rhs":	{
+													"node_name":	"Factor",
+													"name_factor":	{
+														"node_name":	"Identifier",
+														"id":	"k"
+													}
+												}
+											}
+										}
+									}]
+							}
+						}
+					}
+				}, {
+					"node_name":	"Statement",
+					"label":	-1,
+					"body":	{
+						"node_name":	"NonLabelStatement",
+						"PROC":	{
+							"node_name":	"ProcStatement",
 							"normal_proc":	{
 								"node_name":	"Procedure",
 								"id":	{
 									"node_name":	"Identifier",
 									"id":	"inner2"
 								},
+								"arg_list":	[{
+										"node_name":	"Expression",
+										"type":	"SINGLE",
+										"rhs":	{
+											"node_name":	"Expr",
+											"type":	"SINGLE",
+											"rhs":	{
+												"node_name":	"Term",
+												"type":	"SINGLE",
+												"rhs":	{
+													"node_name":	"Factor",
+													"name_factor":	{
+														"node_name":	"Identifier",
+														"id":	"k"
+													}
+												}
+											}
+										}
+									}]
+							}
+						}
+					}
+				}, {
+					"node_name":	"Statement",
+					"label":	-1,
+					"body":	{
+						"node_name":	"NonLabelStatement",
+						"PROC":	{
+							"node_name":	"ProcStatement",
+							"sys_proc":	{
+								"node_name":	"SystemProcedure",
+								"id":	"WRITELN",
 								"arg_list":	[{
 										"node_name":	"Expression",
 										"type":	"SINGLE",
