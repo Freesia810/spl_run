@@ -794,6 +794,7 @@ cJSON* SysFuncCall::createJSONObj(){
 
 void Program::generateIR(IRGenerator* ir){
     ir->GetModulePt() = new llvm::Module(this->program_id->id, ir->GetContext());
+    ir->AfterModule();
 
     //main
     llvm::Type* intType = llvm::Type::getInt32Ty(ir->GetContext());
@@ -1245,29 +1246,32 @@ void CallDecl::generateIR(IRGenerator* ir){
                 auto this_type = this_param.type->getLLVMType(ir, cc);
 
                 for(size_t j = 0; j < ARRAY_SIZE(this_param.para_list); j++){
-                    auto para_name = this_param.para_list[i].buffer;
+                    auto para_name = this_param.para_list[j].buffer;
 
                     if(isVal){
                         ir->GetBuilder().CreateStore(arg_iter++, 
                             tmp_builder.CreateAlloca(this_type, nullptr, para_name));
+                        ir->AddVarDef(para_name, this_type, cc, false);
                     }
                     else{
                         function->addAttributeAtIndex(idx, llvm::Attribute::get(ir->GetContext(), llvm::Attribute::AttrKind::NonNull));
                         ir->GetBuilder().CreateGEP(this_type, arg_iter, ir->GetBuilder().getInt32(0), para_name);
+                        ir->AddVarDef(para_name, this_type, cc, false);
                     }
                     idx++;
                 }
             }
 
             //return val
-            tmp_builder.CreateAlloca(call_cxt->ret_context.first, nullptr, this->decl.func_decl->head->func_name->buffer);
+            tmp_builder.CreateAlloca(call_cxt->ret_context.first, nullptr, this->decl.func_decl->head->func_name->buffer);            
+            ir->AddVarDef(this->decl.func_decl->head->func_name->buffer, call_cxt->ret_context.first, call_cxt->ret_context.second, true);
 
             //subroutine
             this->decl.func_decl->sub_routine->generateIR(ir);
 
             //return
             ir->GetBuilder().CreateRet(new llvm::LoadInst(call_cxt->ret_context.first, 
-                this->decl.func_decl->head->func_name->getLLVMValue(ir), "ret", false, 
+                ir->FindSymbolValue(this->decl.func_decl->head->func_name->buffer), "ret", false, 
                     ir->GetBuilder().GetInsertBlock()));
 
             //pop
@@ -1328,10 +1332,12 @@ void CallDecl::generateIR(IRGenerator* ir){
                     if(isVal){
                         ir->GetBuilder().CreateStore(arg_iter++, 
                             tmp_builder.CreateAlloca(this_type, nullptr, para_name));
+                        ir->AddVarDef(para_name, this_type, cc, false);
                     }
                     else{
                         function->addAttributeAtIndex(idx, llvm::Attribute::get(ir->GetContext(), llvm::Attribute::AttrKind::NonNull));
                         ir->GetBuilder().CreateGEP(this_type, arg_iter, ir->GetBuilder().getInt32(0), para_name);
+                        ir->AddVarDef(para_name, this_type, cc, false);
                     }
                     idx++;
                 }
@@ -1493,7 +1499,7 @@ llvm::Value* Term::getLLVMValue(IRGenerator* ir){
         return ir->GetBuilder().CreateSRem(this->lhs->getLLVMValue(ir), this->rhs->getLLVMValue(ir), "TMP_MOD");
         break;
     case Term::AND:
-        return ir->GetBuilder().CreateAnd(this->lhs->getLLVMValue(ir), this->rhs->getLLVMValue(ir), "TMP_ADD");
+        return ir->GetBuilder().CreateAnd(this->lhs->getLLVMValue(ir), this->rhs->getLLVMValue(ir), "TMP_AND");
         break;
     default:
         break;

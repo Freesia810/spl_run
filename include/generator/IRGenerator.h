@@ -87,11 +87,38 @@ private:
     std::deque<std::unordered_map<std::string, std::pair<llvm::Type*, CompoundContext*>>> _local_var_map;
     std::unordered_map<std::string, CallContext*> _call_map;
     std::unordered_map<std::string, llvm::BasicBlock*> _block_map;
-    
-    
+
+    llvm::Function* print;
+    llvm::Function* scan;
     llvm::IRBuilder<>* _builder;
+
+    llvm::Function* makePrintf() {
+        std::vector<llvm::Type*> arg_types;
+        arg_types.push_back(GetBuilder().getInt8PtrTy());
+        auto printf_type = llvm::FunctionType::get(GetBuilder().getInt32Ty(), llvm::makeArrayRef(arg_types), true);
+        auto func = llvm::Function::Create(printf_type, llvm::Function::ExternalLinkage, llvm::Twine("printf"), GetModulePt());
+        func->setCallingConv(llvm::CallingConv::C);
+        return func;
+    }
+
+    llvm::Function* makeScanf() {
+        auto scanf_type = llvm::FunctionType::get(GetBuilder().getInt32Ty(), true);
+        auto func = llvm::Function::Create(scanf_type, llvm::Function::ExternalLinkage, llvm::Twine("scanf"), GetModulePt());
+        func->setCallingConv(llvm::CallingConv::C);
+        return func;
+    }
+
+
 public:
-    void Init() { _context = new llvm::LLVMContext(); _builder = new llvm::IRBuilder<>(GetContext()); }
+    void Init() { 
+        _context = new llvm::LLVMContext(); 
+        _builder = new llvm::IRBuilder<>(GetContext()); 
+    };
+
+    void AfterModule(){
+        this->print = makePrintf(); 
+        this->scan = makeScanf(); 
+    }
     
     llvm::IRBuilder<>& GetBuilder() { return *_builder; }
     
@@ -126,19 +153,11 @@ public:
     llvm::Module*& GetModulePt() { return _module; };
     
     llvm::Function* GetPrintf() {
-        std::vector<llvm::Type*> arg_types;
-        arg_types.push_back(GetBuilder().getInt8PtrTy());
-        auto printf_type = llvm::FunctionType::get(GetBuilder().getInt32Ty(), llvm::makeArrayRef(arg_types), true);
-        auto func = llvm::Function::Create(printf_type, llvm::Function::ExternalLinkage, llvm::Twine("printf"), GetModulePt());
-        func->setCallingConv(llvm::CallingConv::C);
-        return func;
+        return this->print;
     }
 
     llvm::Function* GetScanf() {
-        auto scanf_type = llvm::FunctionType::get(GetBuilder().getInt32Ty(), true);
-        auto func = llvm::Function::Create(scanf_type, llvm::Function::ExternalLinkage, llvm::Twine("scanf"), GetModulePt());
-        func->setCallingConv(llvm::CallingConv::C);
-        return func;
+        return this->scan;
     }
 
     llvm::Constant* GetDefaultValue(llvm::Type* this_type);
