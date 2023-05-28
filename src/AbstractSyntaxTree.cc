@@ -828,9 +828,6 @@ void Routine::generateIR(IRGenerator* ir){
     }
     else{
         //sub
-        if(this->routine_head->routine_part != nullptr){
-            assert(false);
-        }
         if(this->routine_head != nullptr)
             this->routine_head->generateIR(ir);
         if(this->routine_body != nullptr)
@@ -1209,16 +1206,24 @@ void CallDecl::generateIR(IRGenerator* ir){
             }
             else{
                 for(size_t i = 0; i < ARRAY_SIZE(this->decl.func_decl->head->params); i++){
-                    auto this_param = this->decl.func_decl->head->params[i];
+                    auto this_param = this->decl.proc_decl->head->params[i];
                     CompoundContext* cc;
                     auto this_type = this_param.type->getLLVMType(ir, cc);
+                    auto isVal = this_param.flag;
 
                     for(size_t j = 0; j < ARRAY_SIZE(this_param.para_list); j++){
                         auto para_name = this_param.para_list[i].buffer;
 
-                        llvm_para_types.push_back(this_type);
-                        CallContext::ParamInfo* info = new CallContext::ParamInfo(para_name, this_type, cc);
-                        call_cxt->params_context.push_back(info);
+                        if(isVal){
+                            llvm_para_types.push_back(this_type);
+                            CallContext::ParamInfo* info = new CallContext::ParamInfo(para_name, this_type, cc);
+                            call_cxt->params_context.push_back(info);
+                        }
+                        else{
+                            llvm_para_types.push_back(this_type->getPointerTo());
+                            CallContext::ParamInfo* info = new CallContext::ParamInfo(para_name, this_type->getPointerTo(), cc);
+                            call_cxt->params_context.push_back(info);
+                        }
                     }
                 }
                 functionType = llvm::FunctionType::get(call_cxt->ret_context.first, llvm_para_types, false);
@@ -1256,7 +1261,7 @@ void CallDecl::generateIR(IRGenerator* ir){
                     else{
                         function->addAttributeAtIndex(idx, llvm::Attribute::get(ir->GetContext(), llvm::Attribute::AttrKind::NonNull));
                         ir->GetBuilder().CreateGEP(this_type, arg_iter, ir->GetBuilder().getInt32(0), para_name);
-                        ir->AddVarDef(para_name, this_type, cc, false);
+                        ir->AddVarDef(para_name, this_type->getPointerTo(), cc, false);
                     }
                     idx++;
                 }
@@ -1293,13 +1298,21 @@ void CallDecl::generateIR(IRGenerator* ir){
                     auto this_param = this->decl.proc_decl->head->params[i];
                     CompoundContext* cc;
                     auto this_type = this_param.type->getLLVMType(ir, cc);
+                    auto isVal = this_param.flag;
 
                     for(size_t j = 0; j < ARRAY_SIZE(this_param.para_list); j++){
                         auto para_name = this_param.para_list[i].buffer;
 
-                        llvm_para_types.push_back(this_type);
-                        CallContext::ParamInfo* info = new CallContext::ParamInfo(para_name, this_type, cc);
-                        call_cxt->params_context.push_back(info);
+                        if(isVal){
+                            llvm_para_types.push_back(this_type);
+                            CallContext::ParamInfo* info = new CallContext::ParamInfo(para_name, this_type, cc);
+                            call_cxt->params_context.push_back(info);
+                        }
+                        else{
+                            llvm_para_types.push_back(this_type->getPointerTo());
+                            CallContext::ParamInfo* info = new CallContext::ParamInfo(para_name, this_type->getPointerTo(), cc);
+                            call_cxt->params_context.push_back(info);
+                        }
                     }
                 }
                 functionType = llvm::FunctionType::get(call_cxt->ret_context.first, llvm_para_types, false);
@@ -1337,7 +1350,7 @@ void CallDecl::generateIR(IRGenerator* ir){
                     else{
                         function->addAttributeAtIndex(idx, llvm::Attribute::get(ir->GetContext(), llvm::Attribute::AttrKind::NonNull));
                         ir->GetBuilder().CreateGEP(this_type, arg_iter, ir->GetBuilder().getInt32(0), para_name);
-                        ir->AddVarDef(para_name, this_type, cc, false);
+                        ir->AddVarDef(para_name, this_type->getPointerTo(), cc, false);
                     }
                     idx++;
                 }

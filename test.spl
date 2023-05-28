@@ -1,13 +1,15 @@
 program hello;
+var	
+	k : integer;
 
-function add(a, b : integer) : integer;
-
+procedure inner2(var aa : integer);
 begin
-	add := a + b;
+	aa := 200;
 end
 ;
 
 begin
-	writeln(add(3, 4));
+	k := 100;
+	inner2(k);
 end
 .

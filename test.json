@@ -8,97 +8,22 @@
 		"node_name":	"Routine",
 		"routine_head_node":	{
 			"node_name":	"RoutineHead",
-			"call_decl_list":	[{
-					"node_name":	"CallDecl",
-					"func_decl":	{
-						"node_name":	"FunctionDecl",
-						"head":	{
-							"node_name":	"FunctionHead",
-							"func_name":	{
-								"node_name":	"Identifier",
-								"id":	"add"
-							},
-							"params":	[{
-									"node_name":	"ParaTypeList",
-									"para_type":	"val",
-									"para_list":	[{
-											"node_name":	"Identifier",
-											"id":	"a"
-										}, {
-											"node_name":	"Identifier",
-											"id":	"b"
-										}],
-									"type":	{
-										"node_name":	"SimpleTypeDecl",
-										"decl_type":	"sys_integer"
-									}
-								}],
-							"ret":	{
-								"node_name":	"SimpleTypeDecl",
-								"decl_type":	"sys_integer"
-							}
-						},
-						"sub_routine":	{
-							"node_name":	"Routine",
-							"routine_head_node":	{
-								"node_name":	"RoutineHead"
-							},
-							"routine_body_node":	{
-								"node_name":	"CompoundStatement",
-								"stmt_list":	[{
-										"node_name":	"Statement",
-										"label":	-1,
-										"body":	{
-											"node_name":	"NonLabelStatement",
-											"ASSIGN":	{
-												"node_name":	"AssignStatement",
-												"normal_assign":	{
-													"node_name":	"NormalAssignment",
-													"id":	{
-														"node_name":	"Identifier",
-														"id":	"add"
-													},
-													"value":	{
-														"node_name":	"Expression",
-														"type":	"SINGLE",
-														"rhs":	{
-															"node_name":	"Expr",
-															"lhs":	{
-																"node_name":	"Expr",
-																"type":	"SINGLE",
-																"rhs":	{
-																	"node_name":	"Term",
-																	"type":	"SINGLE",
-																	"rhs":	{
-																		"node_name":	"Factor",
-																		"name_factor":	{
-																			"node_name":	"Identifier",
-																			"id":	"a"
-																		}
-																	}
-																}
-															},
-															"type":	"PLUS",
-															"rhs":	{
-																"node_name":	"Term",
-																"type":	"SINGLE",
-																"rhs":	{
-																	"node_name":	"Factor",
-																	"name_factor":	{
-																		"node_name":	"Identifier",
-																		"id":	"b"
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}]
-							}
+			"var_decl_list":	[{
+					"node_name":	"NormalDecl",
+					"name_list_decl":	[{
+							"node_name":	"Identifier",
+							"id":	"k"
+						}],
+					"type_decl":	{
+						"node_name":	"TypeDecl",
+						"simple_decl_node":	{
+							"node_name":	"SimpleTypeDecl",
+							"decl_type":	"sys_integer"
 						}
 					}
+				}],
+			"call_decl_list":	[{
+					"node_name":	"CallDecl"
 				}]
 		},
 		"routine_body_node":	{
@@ -108,11 +33,49 @@
 					"label":	-1,
 					"body":	{
 						"node_name":	"NonLabelStatement",
+						"ASSIGN":	{
+							"node_name":	"AssignStatement",
+							"normal_assign":	{
+								"node_name":	"NormalAssignment",
+								"id":	{
+									"node_name":	"Identifier",
+									"id":	"k"
+								},
+								"value":	{
+									"node_name":	"Expression",
+									"type":	"SINGLE",
+									"rhs":	{
+										"node_name":	"Expr",
+										"type":	"SINGLE",
+										"rhs":	{
+											"node_name":	"Term",
+											"type":	"SINGLE",
+											"rhs":	{
+												"node_name":	"Factor",
+												"const_factor":	{
+													"node_name":	"ConstValue",
+													"int_value":	100
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}, {
+					"node_name":	"Statement",
+					"label":	-1,
+					"body":	{
+						"node_name":	"NonLabelStatement",
 						"PROC":	{
 							"node_name":	"ProcStatement",
-							"sys_proc":	{
-								"node_name":	"SystemProcedure",
-								"id":	"WRITELN",
+							"normal_proc":	{
+								"node_name":	"Procedure",
+								"id":	{
+									"node_name":	"Identifier",
+									"id":	"inner2"
+								},
 								"arg_list":	[{
 										"node_name":	"Expression",
 										"type":	"SINGLE",
@@ -124,49 +87,9 @@
 												"type":	"SINGLE",
 												"rhs":	{
 													"node_name":	"Factor",
-													"func_factor":	{
-														"node_name":	"FunctionCall",
-														"func_name":	{
-															"node_name":	"Identifier",
-															"id":	"add"
-														},
-														"args":	[{
-																"node_name":	"Expression",
-																"type":	"SINGLE",
-																"rhs":	{
-																	"node_name":	"Expr",
-																	"type":	"SINGLE",
-																	"rhs":	{
-																		"node_name":	"Term",
-																		"type":	"SINGLE",
-																		"rhs":	{
-																			"node_name":	"Factor",
-																			"const_factor":	{
-																				"node_name":	"ConstValue",
-																				"int_value":	3
-																			}
-																		}
-																	}
-																}
-															}, {
-																"node_name":	"Expression",
-																"type":	"SINGLE",
-																"rhs":	{
-																	"node_name":	"Expr",
-																	"type":	"SINGLE",
-																	"rhs":	{
-																		"node_name":	"Term",
-																		"type":	"SINGLE",
-																		"rhs":	{
-																			"node_name":	"Factor",
-																			"const_factor":	{
-																				"node_name":	"ConstValue",
-																				"int_value":	4
-																			}
-																		}
-																	}
-																}
-															}]
+													"name_factor":	{
+														"node_name":	"Identifier",
+														"id":	"k"
 													}
 												}
 											}
