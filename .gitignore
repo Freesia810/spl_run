@@ -1,3 +1,7 @@
 build/
 .vscode/
 *.output
+*.o
+*.s
+*.ll
+*.out

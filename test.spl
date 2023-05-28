@@ -1,33 +1,26 @@
 program hello;
+const
+	ic = 1;
+	l = 1;
+	r = 6;
+	rc = 1.5;
+	bc = false;
+	cc = 'a';
 var
-	i : integer;
-
-function go(a : integer): integer;
-begin
-	if a = 1 then
-	begin
-		go := 1;
-	end
-	else
-	begin
-		if a = 2 then
-		begin
-			go := 1;
-		end
-		else
-		begin
-			go := go(a - 1) + go(a - 2);
-		end
-		endif
-		;
-	end
-	endif
-	;
-end
-;
+	iv : integer;
+	rv : real;
+	bv : boolean;
+	cv : char;
+	p : integer;
+	a : array[l..r] of integer;
 
 begin
-	i := go(10);
-	writeln(i);
+	iv := 0;  
+	for iv := l to r do
+	begin
+		a[l + 1] := iv + 1;
+		writeln(a[l + 1]);
+	end;
+	a[l + 1] := 8;
 end
 .

@@ -23,13 +23,19 @@
 #include <iostream>
 #include <llvm/ADT/APFloat.h>
 #include <fstream>
-#include "AbstractSyntaxTree.h"
 #include <deque>
 
+enum Sys_Type{
+    SYS_BOOLEAN,
+    SYS_CHAR,
+    SYS_INTEGER,
+    SYS_REAL
+};
+
 enum Compound_Type{
-    SINGLE,
-    ARRAY,
-    RECORD
+    SPL_SINGLE,
+    SPL_ARRAY,
+    SPL_RECORD
 };
 
 struct CompoundContext{
@@ -39,19 +45,19 @@ struct CompoundContext{
 
 struct SingleContext: public CompoundContext{
     Sys_Type single_type;
-    SingleContext(): CompoundContext(Compound_Type::SINGLE){};
+    SingleContext(): CompoundContext(Compound_Type::SPL_SINGLE){};
 };
 
 struct ArrayContext: public CompoundContext{
     std::pair<int64_t, int64_t> range;
     CompoundContext* element_context;
-    ArrayContext(): CompoundContext(Compound_Type::ARRAY){};
+    ArrayContext(): CompoundContext(Compound_Type::SPL_ARRAY){};
 };
 
 struct RecordContext: public CompoundContext{
     std::unordered_map<std::string, uint64_t> field_map;
     std::unordered_map<std::string, CompoundContext*> context_map;
-    RecordContext(): CompoundContext(Compound_Type::RECORD){};
+    RecordContext(): CompoundContext(Compound_Type::SPL_RECORD){};
 };
 
 struct CallContext {
@@ -85,7 +91,7 @@ private:
     
     llvm::IRBuilder<>* _builder;
 public:
-    void Init() { _builder = new llvm::IRBuilder<>(GetContext());}
+    void Init() { _context = new llvm::LLVMContext(); _builder = new llvm::IRBuilder<>(GetContext()); }
     
     llvm::IRBuilder<>& GetBuilder() { return *_builder; }
     
@@ -134,4 +140,6 @@ public:
         func->setCallingConv(llvm::CallingConv::C);
         return func;
     }
+
+    llvm::Constant* GetDefaultValue(llvm::Type* this_type);
 };

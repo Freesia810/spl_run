@@ -20,20 +20,28 @@ int main(int argc,char *argv[]){
 
     Visualization(syntax_root, "test.json");
 
+    IRGenerator generator;
+    generator.Init();
+    syntax_root->generateIR(&generator);
 
+    auto m = generator.GetModulePt();
 
-    // llvm::SMDiagnostic error;
-    // llvm::LLVMContext context;
-    // std::unique_ptr<llvm::Module> m = llvm::parseIRFile("../test.ll", error, context);
+    std::error_code ec;
+    llvm::raw_fd_ostream output("test.ll", ec, llvm::sys::fs::OF_None);
 
-    // TargetGenerator generator(m.get(), "x86_64-linux-gnu", "generic-rv64", "");
-    // generator.Init();
+    if (ec) {
+        std::cerr << "Could not open file: " << ec.message();
+    }
+    m->print(output, nullptr);
 
-    // generator.GenerateBitcodeFile("a.bc");
+    TargetGenerator t_generator(m);
+    t_generator.Init();
 
-    // generator.GenerateObjectFile("a");
+    t_generator.GenerateBitcodeFile("a.bc");
 
-    // generator.GenerateAssemblyFile("a.s");
+    t_generator.GenerateObjectFile("a.o");
+
+    t_generator.GenerateAssemblyFile("a.s");
     
     return 0;
 }

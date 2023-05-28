@@ -8,7 +8,6 @@
 #include "generator/IRGenerator.h"
 #include "cJSON.h"
 #define ARRAY_SIZE(p) malloc_usable_size(p) / sizeof(p[0])
-#define INT32_MAX 2147483647
 
 struct Expression;
 struct Factor;
@@ -74,12 +73,6 @@ enum Sys_Proc{
     WRITELN
 };
 
-enum Sys_Type{
-    SYS_BOOLEAN,
-    SYS_CHAR,
-    SYS_INTEGER,
-    SYS_REAL
-};
 struct Statement;
 struct Expression;
 

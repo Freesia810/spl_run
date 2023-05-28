@@ -820,16 +820,20 @@ void Program::generateIR(IRGenerator* ir){
 void Routine::generateIR(IRGenerator* ir){
     if(this->isGlobal){
         this->routine_head->flagGlobal();
-        this->routine_head->generateIR(ir);
-        this->routine_body->generateIR(ir);
+        if(this->routine_head != nullptr)
+            this->routine_head->generateIR(ir);
+        if(this->routine_body != nullptr)
+            this->routine_body->generateIR(ir);
     }
     else{
         //sub
         if(this->routine_head->routine_part != nullptr){
             assert(false);
         }
-        this->routine_head->generateIR(ir);
-        this->routine_body->generateIR(ir);
+        if(this->routine_head != nullptr)
+            this->routine_head->generateIR(ir);
+        if(this->routine_body != nullptr)
+            this->routine_body->generateIR(ir);
     }
     
 }
@@ -880,6 +884,7 @@ void ConstExprssion::generateIR(IRGenerator* ir){
 
     llvm::GlobalVariable* gVar = nullptr;
     auto const_val = this->value->getLLVMValue(ir);
+    auto sc = new SingleContext();
     if(this->global){
         //global const
         switch (this->value->flag)
@@ -888,16 +893,22 @@ void ConstExprssion::generateIR(IRGenerator* ir){
             ir->GetModulePt()->getOrInsertGlobal(this->name->buffer, ir->GetBuilder().getInt32Ty());
             gVar = ir->GetModulePt()->getNamedGlobal(this->name->buffer);
             gVar->setInitializer(const_val);
+            sc->single_type = Sys_Type::SYS_INTEGER;
+            ir->AddVarDef(this->name->buffer, ir->GetBuilder().getInt32Ty(), sc, this->global);
             break;
         case ConstValue::REAL:
             ir->GetModulePt()->getOrInsertGlobal(this->name->buffer, ir->GetBuilder().getDoubleTy());
             gVar = ir->GetModulePt()->getNamedGlobal(this->name->buffer);
             gVar->setInitializer(const_val);
+            sc->single_type = Sys_Type::SYS_REAL;
+            ir->AddVarDef(this->name->buffer, ir->GetBuilder().getDoubleTy(), sc, this->global);
             break;
         case ConstValue::CHAR:
             ir->GetModulePt()->getOrInsertGlobal(this->name->buffer, ir->GetBuilder().getInt8Ty());
             gVar = ir->GetModulePt()->getNamedGlobal(this->name->buffer);
             gVar->setInitializer(const_val);
+            sc->single_type = Sys_Type::SYS_CHAR;
+            ir->AddVarDef(this->name->buffer, ir->GetBuilder().getInt8Ty(), sc, this->global);
             break;
         case ConstValue::SYS_CON:
             switch (this->value->value.sys_con_value)
@@ -906,16 +917,20 @@ void ConstExprssion::generateIR(IRGenerator* ir){
                 ir->GetModulePt()->getOrInsertGlobal(this->name->buffer, ir->GetBuilder().getInt1Ty());
                 gVar = ir->GetModulePt()->getNamedGlobal(this->name->buffer);
                 gVar->setInitializer(const_val);
+                ir->AddVarDef(this->name->buffer, ir->GetBuilder().getInt1Ty(), sc, this->global);
                 break;
             case Sys_Con::FALSE:
                 ir->GetModulePt()->getOrInsertGlobal(this->name->buffer, ir->GetBuilder().getInt1Ty());
                 gVar = ir->GetModulePt()->getNamedGlobal(this->name->buffer);
                 gVar->setInitializer(const_val);
+                ir->AddVarDef(this->name->buffer, ir->GetBuilder().getInt1Ty(), sc, this->global);
                 break;
             case Sys_Con::MAXINT:
                 ir->GetModulePt()->getOrInsertGlobal(this->name->buffer, ir->GetBuilder().getInt32Ty());
                 gVar = ir->GetModulePt()->getNamedGlobal(this->name->buffer);
                 gVar->setInitializer(const_val);
+                sc->single_type = Sys_Type::SYS_INTEGER;
+                ir->AddVarDef(this->name->buffer, ir->GetBuilder().getInt32Ty(), sc, this->global);
                 break;
             default:
                 break;
@@ -936,14 +951,20 @@ void ConstExprssion::generateIR(IRGenerator* ir){
         case ConstValue::INT:
             ir->GetBuilder().CreateStore(ir->GetBuilder().getInt32(this->value->value.int_value), 
                 tmp_builder.CreateAlloca(ir->GetBuilder().getInt32Ty(), nullptr, this->name->buffer));
+            sc->single_type = Sys_Type::SYS_INTEGER;
+            ir->AddVarDef(this->name->buffer, ir->GetBuilder().getInt32Ty(), sc, this->global);
             break;
         case ConstValue::REAL:
             ir->GetBuilder().CreateStore(llvm::ConstantFP::get(ir->GetBuilder().getDoubleTy(), this->value->value.real_value), 
                 tmp_builder.CreateAlloca(ir->GetBuilder().getDoubleTy(), nullptr, this->name->buffer));
+            sc->single_type = Sys_Type::SYS_REAL;
+            ir->AddVarDef(this->name->buffer, ir->GetBuilder().getDoubleTy(), sc, this->global);
             break;
         case ConstValue::CHAR:
             ir->GetBuilder().CreateStore(ir->GetBuilder().getInt8(this->value->value.char_value), 
                 tmp_builder.CreateAlloca(ir->GetBuilder().getInt8Ty(), nullptr, this->name->buffer));
+            sc->single_type = Sys_Type::SYS_CHAR;
+            ir->AddVarDef(this->name->buffer, ir->GetBuilder().getInt8Ty(), sc, this->global);
             break;
         case ConstValue::SYS_CON:
             switch (this->value->value.sys_con_value)
@@ -951,14 +972,18 @@ void ConstExprssion::generateIR(IRGenerator* ir){
             case Sys_Con::TRUE:
                 ir->GetBuilder().CreateStore(ir->GetBuilder().getTrue(), 
                     tmp_builder.CreateAlloca(ir->GetBuilder().getInt1Ty(), nullptr, this->name->buffer));
+                ir->AddVarDef(this->name->buffer, ir->GetBuilder().getInt1Ty(), sc, this->global);
                 break;
             case Sys_Con::FALSE:
                 ir->GetBuilder().CreateStore(ir->GetBuilder().getFalse(), 
                     tmp_builder.CreateAlloca(ir->GetBuilder().getInt1Ty(), nullptr, this->name->buffer));
+                ir->AddVarDef(this->name->buffer, ir->GetBuilder().getInt1Ty(), sc, this->global);
                 break;
             case Sys_Con::MAXINT:
                 ir->GetBuilder().CreateStore(ir->GetBuilder().getInt32(INT32_MAX), 
                     tmp_builder.CreateAlloca(ir->GetBuilder().getInt32Ty(), nullptr, this->name->buffer));
+                sc->single_type = Sys_Type::SYS_INTEGER;
+                ir->AddVarDef(this->name->buffer, ir->GetBuilder().getInt32Ty(), sc, this->global);
                 break;
             default:
                 break;
@@ -1011,11 +1036,12 @@ llvm::Type* SimpleTypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
         break;
     case SimpleTypeDecl::RANGE_TYPE:
         std::cerr << "Unsupported variable type decl\n";
-        _exit(0);
+        assert(false);
         break;
     default:
         break;
     }
+    return nullptr;
 }
 
 llvm::Type* TypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
@@ -1028,7 +1054,7 @@ llvm::Type* TypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
         {
             if(this->decl.array_decl->range_decl->flag != SimpleTypeDecl::RANGE_TYPE){
                 std::cerr << "Unsupported array range decl\n";
-                _exit(0);
+                assert(false);
             }
 
             cc = new ArrayContext();
@@ -1081,18 +1107,16 @@ llvm::Type* TypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
                 break;
             case RangeTypeDecl::NAME_NAME:
                 {
-                    auto lhs = this->decl.array_decl->range_decl->type_decl.range_type_decl->n_lhs->getLLVMValue(ir);
-                    auto rhs = this->decl.array_decl->range_decl->type_decl.range_type_decl->n_rhs->getLLVMValue(ir);   
-                    if(lhs->getType()->getTypeID() == llvm::Type::TypeID::IntegerTyID 
-                        && rhs->getType()->getTypeID() == llvm::Type::TypeID::IntegerTyID){
-                            auto c_lhs = llvm::dyn_cast<llvm::ConstantInt>(lhs);
-                            auto c_rhs = llvm::dyn_cast<llvm::ConstantInt>(rhs);
-                            ac->range = {c_lhs->getSExtValue(), c_rhs->getSExtValue()};
-                    }
-                    else{
-                        //throw
-                        assert(false);
-                    }
+                    auto lhs = this->decl.array_decl->range_decl->type_decl.range_type_decl->n_lhs;
+                    auto rhs = this->decl.array_decl->range_decl->type_decl.range_type_decl->n_rhs;   
+                    auto gv_l = ir->GetModulePt()->getGlobalVariable(lhs->buffer);
+                    auto gv_r = ir->GetModulePt()->getGlobalVariable(rhs->buffer);
+                    auto c_lhs = gv_l->getInitializer();
+                    auto c_rhs = gv_r->getInitializer();
+                    auto c_int_lhs = llvm::dyn_cast<llvm::ConstantInt>(c_lhs);
+                    auto c_int_rhs = llvm::dyn_cast<llvm::ConstantInt>(c_rhs);
+                    assert(c_int_lhs != nullptr && c_int_rhs != nullptr);
+                    ac->range = {c_int_lhs->getSExtValue(), c_int_rhs->getSExtValue()};
                 }
                 break;
             default:
@@ -1135,6 +1159,7 @@ llvm::Type* TypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
     default:
         break;
     }
+    return nullptr;
 }
 
 void TypeDefinition::generateIR(IRGenerator* ir){
@@ -1157,8 +1182,7 @@ void NormalDecl::generateIR(IRGenerator* ir) {
             llvm::GlobalVariable* gVar = nullptr;
             ir->GetModulePt()->getOrInsertGlobal(this_var, llvm_type);
             gVar = ir->GetModulePt()->getNamedGlobal(this_var);
-            assert(false);
-            gVar->setInitializer(nullptr);
+            gVar->setInitializer(ir->GetDefaultValue(llvm_type));
         }
         else{
             llvm::IRBuilder<> tmp_builder(&(ir->GetCurrentFunction()->getEntryBlock()), ir->GetCurrentFunction()->getEntryBlock().begin());
@@ -1192,7 +1216,8 @@ void CallDecl::generateIR(IRGenerator* ir){
                         auto para_name = this_param.para_list[i].buffer;
 
                         llvm_para_types.push_back(this_type);
-                        call_cxt->params_context.emplace_back(para_name, this_type, cc);
+                        CallContext::ParamInfo* info = new CallContext::ParamInfo(para_name, this_type, cc);
+                        call_cxt->params_context.push_back(info);
                     }
                 }
                 functionType = llvm::FunctionType::get(call_cxt->ret_context.first, llvm_para_types, false);
@@ -1269,7 +1294,8 @@ void CallDecl::generateIR(IRGenerator* ir){
                         auto para_name = this_param.para_list[i].buffer;
 
                         llvm_para_types.push_back(this_type);
-                        call_cxt->params_context.emplace_back(para_name, this_type, cc);
+                        CallContext::ParamInfo* info = new CallContext::ParamInfo(para_name, this_type, cc);
+                        call_cxt->params_context.push_back(info);
                     }
                 }
                 functionType = llvm::FunctionType::get(call_cxt->ret_context.first, llvm_para_types, false);
@@ -1419,6 +1445,7 @@ llvm::Value* Expression::getLLVMValue(IRGenerator* ir){
     default:
         break;
     }
+    return nullptr;
 }
 
 llvm::Value* Expr::getLLVMValue(IRGenerator* ir){
@@ -1443,6 +1470,7 @@ llvm::Value* Expr::getLLVMValue(IRGenerator* ir){
     default:
         break;
     }
+    return nullptr;
 }
 
 llvm::Value* Term::getLLVMValue(IRGenerator* ir){
@@ -1470,6 +1498,7 @@ llvm::Value* Term::getLLVMValue(IRGenerator* ir){
     default:
         break;
     }
+    return nullptr;
 }
 
 llvm::Value* Factor::getLLVMValue(IRGenerator* ir){
@@ -1520,6 +1549,7 @@ llvm::Value* Factor::getLLVMValue(IRGenerator* ir){
     default:
         break;
     }
+    return nullptr;
 }
 
 llvm::Constant* ConstValue::getLLVMValue(IRGenerator* ir){
@@ -1553,6 +1583,7 @@ llvm::Constant* ConstValue::getLLVMValue(IRGenerator* ir){
     default:
         break;
     }
+    return nullptr;
 }
 
 llvm::Value* AtOperation::getLLVMValue(IRGenerator* ir){
@@ -1566,10 +1597,11 @@ llvm::Value* AtOperation::getLLVMValue(IRGenerator* ir){
 
     auto ac = static_cast<ArrayContext*>(p.second);
 
-    idx_list.push_back(ir->GetBuilder().getInt32(
-        llvm::dyn_cast<llvm::ConstantInt>(idx_value)->getSExtValue() - ac->range.first));
+    idx_list.push_back(ir->GetBuilder().CreateSub(idx_value, ir->GetBuilder().getInt32(ac->range.first)));
 
-    return ir->GetBuilder().CreateInBoundsGEP(p.first, ir->FindSymbolValue(this->array_id->buffer), idx_list);
+    return ir->GetBuilder().CreateLoad(p.first->getArrayElementType(), 
+        ir->GetBuilder().CreateInBoundsGEP(p.first, 
+            ir->FindSymbolValue(this->array_id->buffer), idx_list), "arrRef");
 }
 
 llvm::Value* GetOperation::getLLVMValue(IRGenerator* ir){
@@ -1580,7 +1612,11 @@ llvm::Value* GetOperation::getLLVMValue(IRGenerator* ir){
 
     auto iter = rc->field_map.find(this->field_id->buffer);
     assert(iter != rc->field_map.end());
-    return ir->GetBuilder().CreateStructGEP(p.first, ir->FindSymbolValue(this->record_id->buffer), iter->second);
+    
+    return ir->GetBuilder().CreateLoad(
+        p.first->getStructElementType(iter->second), 
+        ir->GetBuilder().CreateStructGEP(p.first, 
+            ir->FindSymbolValue(this->record_id->buffer), iter->second));
 }
 
 llvm::Value* FunctionCall::getLLVMValue(IRGenerator* ir){
@@ -1592,7 +1628,8 @@ llvm::Value* FunctionCall::getLLVMValue(IRGenerator* ir){
         if(arg_iter->hasNonNullAttr()){
             //ref
             assert(this->args[i].type == Expression::SINGLE 
-                && this->args[i].rhs->rhs->type == Expr::SINGLE 
+                && this->args[i].rhs->type == Expr::SINGLE 
+                && this->args[i].rhs->rhs->type == Term::SINGLE 
                 && this->args[i].rhs->rhs->rhs->flag == Factor::NAME);
             auto ref_name = this->args[i].rhs->rhs->rhs->factor.name_factor;
             params.push_back(ir->FindSymbolValue(ref_name->buffer));
@@ -1617,8 +1654,7 @@ void ArrayAssignment::generateIR(IRGenerator* ir){
 
     auto ac = static_cast<ArrayContext*>(p.second);
 
-    idx_list.push_back(ir->GetBuilder().getInt32(
-        llvm::dyn_cast<llvm::ConstantInt>(idx_value)->getSExtValue() - ac->range.first));
+    idx_list.push_back(ir->GetBuilder().CreateSub(idx_value, ir->GetBuilder().getInt32(ac->range.first)));
     
     ir->GetBuilder().CreateStore(this->value_expr->getLLVMValue(ir), 
         ir->GetBuilder().CreateInBoundsGEP(p.first, ir->FindSymbolValue(this->array_id->buffer), idx_list));
@@ -1819,7 +1855,8 @@ void ProcStatement::generateIR(IRGenerator* ir){
                 if(arg_iter->hasNonNullAttr()){
                     //ref
                     assert(this->proc.normal_proc->arg_list[i].type == Expression::SINGLE 
-                        && this->proc.normal_proc->arg_list[i].rhs->rhs->type == Expr::SINGLE 
+                        && this->proc.normal_proc->arg_list[i].rhs->type == Expr::SINGLE 
+                        && this->proc.normal_proc->arg_list[i].rhs->rhs->type == Term::SINGLE 
                         && this->proc.normal_proc->arg_list[i].rhs->rhs->rhs->flag == Factor::NAME);
                     auto ref_name = this->proc.normal_proc->arg_list[i].rhs->rhs->rhs->factor.name_factor;
                     params.push_back(ir->FindSymbolValue(ref_name->buffer));
@@ -1839,16 +1876,16 @@ void ProcStatement::generateIR(IRGenerator* ir){
             std::string format = "";
             for(size_t i = 0; i < ARRAY_SIZE(this->proc.sys_proc->arg_list); i++){
                 auto val = this->proc.normal_proc->arg_list[i].getLLVMValue(ir);
-                if (val->getType()->isIntegerTy(32)){
+                if (val->getType() == ir->GetBuilder().getInt32Ty()){
                     format += "%d";
                 }
-                else if (val->getType()->isIntegerTy(8)){
+                else if (val->getType() == ir->GetBuilder().getInt8Ty()){
                     format += "%c";
                 }
-                else if (val->getType()->isIntegerTy(1)){
+                else if (val->getType() == ir->GetBuilder().getInt1Ty()){
                     format += "%d";
                 }
-                else if (val->getType()->isDoubleTy()){
+                else if (val->getType() == ir->GetBuilder().getDoubleTy()){
                     format += "%lf";
                 }
                 else{
@@ -1867,7 +1904,7 @@ void ProcStatement::generateIR(IRGenerator* ir){
                 llvm::ConstantDataArray::getString(ir->GetContext(), format.c_str()), ".str");
             auto zero = llvm::Constant::getNullValue(ir->GetBuilder().getInt32Ty());
             llvm::Constant* indices[] = {zero, zero};
-            auto varRef = llvm::ConstantExpr::getGetElementPtr(formatVar->getType()->getElementType(), formatVar, indices);
+            auto varRef = llvm::ConstantExpr::getGetElementPtr(formatVar->getType()->getPointerElementType(), formatVar, indices);
             params.insert(params.begin(), varRef);
             ir->GetBuilder().CreateCall(ir->GetPrintf(), llvm::makeArrayRef(params), "printf");
         }
@@ -1988,4 +2025,5 @@ llvm::Value* SysFuncCall::getLLVMValue(IRGenerator* ir){
     default:
         break;
     }
+    return nullptr;
 }

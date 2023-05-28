@@ -1,4 +1,4 @@
-#include "include/generator/IRGenerator.h"
+#include "generator/IRGenerator.h"
 
 CallContext* IRGenerator::FindCallContext(const char* call_name){
     //global
@@ -90,4 +90,44 @@ void IRGenerator::AddVarDef(std::string var_name, llvm::Type* type, CompoundCont
 
 void IRGenerator::AddCallDef(std::string call_name, CallContext* cc){
     this->_call_map.insert({call_name, cc});
+}
+
+llvm::Constant* IRGenerator::GetDefaultValue(llvm::Type* this_type){
+    switch (this_type->getTypeID())
+    {
+    case llvm::Type::IntegerTyID:
+        if(this_type->isIntegerTy(32))
+            return GetBuilder().getInt32(0);
+        if(this_type->isIntegerTy(8))
+            return GetBuilder().getInt8(0);
+        if(this_type->isIntegerTy(1))
+            return GetBuilder().getInt1(0);
+        else
+            return nullptr;
+        break;
+    case llvm::Type::DoubleTyID:
+        return llvm::ConstantFP::get(GetBuilder().getDoubleTy(), 0);
+        break;
+    case llvm::Type::ArrayTyID:
+        {
+            std::vector<llvm::Constant*> element;
+            for(size_t i = 0; i < this_type->getArrayNumElements(); i++){
+                element.push_back(GetDefaultValue(this_type->getArrayElementType()));
+            }
+            return llvm::ConstantArray::get(llvm::dyn_cast<llvm::ArrayType>(this_type), element);
+        }
+        break;
+    case llvm::Type::StructTyID:
+        {
+            std::vector<llvm::Constant*> element;
+            for(size_t i = 0; i < this_type->getStructNumElements(); i++){
+                element.push_back(GetDefaultValue(this_type->getStructElementType(i)));
+            }
+            return llvm::ConstantStruct::get(llvm::dyn_cast<llvm::StructType>(this_type), element);
+        }
+        break;
+    default:
+        return nullptr;
+        break;
+    }
 }

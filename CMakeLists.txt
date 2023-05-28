@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CXX_FLAGS
     -g
 )
+set(CMAKE_BUILD_TYPE "Debug")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
@@ -24,6 +25,7 @@ target_include_directories(spl_parser PUBLIC /usr/include/llvm-14/ /usr/include/
 set(
     SOURCES_FILE
     ${CMAKE_SOURCE_DIR}/src/generator/TargetGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/generator/IRGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/AbstractSyntaxTree.cc
     ${CMAKE_SOURCE_DIR}/src/Visualization.cc
     ${CMAKE_SOURCE_DIR}/src/demo.cc

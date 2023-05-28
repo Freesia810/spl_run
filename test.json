@@ -8,11 +8,72 @@
 		"node_name":	"Routine",
 		"routine_head_node":	{
 			"node_name":	"RoutineHead",
+			"const_expr_list":	[{
+					"node_name":	"ConstExprssion",
+					"name_node":	{
+						"node_name":	"Identifier",
+						"id":	"ic"
+					},
+					"value_node":	{
+						"node_name":	"ConstValue",
+						"int_value":	1
+					}
+				}, {
+					"node_name":	"ConstExprssion",
+					"name_node":	{
+						"node_name":	"Identifier",
+						"id":	"l"
+					},
+					"value_node":	{
+						"node_name":	"ConstValue",
+						"int_value":	1
+					}
+				}, {
+					"node_name":	"ConstExprssion",
+					"name_node":	{
+						"node_name":	"Identifier",
+						"id":	"r"
+					},
+					"value_node":	{
+						"node_name":	"ConstValue",
+						"int_value":	6
+					}
+				}, {
+					"node_name":	"ConstExprssion",
+					"name_node":	{
+						"node_name":	"Identifier",
+						"id":	"rc"
+					},
+					"value_node":	{
+						"node_name":	"ConstValue",
+						"real_value":	1.5
+					}
+				}, {
+					"node_name":	"ConstExprssion",
+					"name_node":	{
+						"node_name":	"Identifier",
+						"id":	"bc"
+					},
+					"value_node":	{
+						"node_name":	"ConstValue",
+						"sys_value":	"FALSE"
+					}
+				}, {
+					"node_name":	"ConstExprssion",
+					"name_node":	{
+						"node_name":	"Identifier",
+						"id":	"cc"
+					},
+					"value_node":	{
+						"node_name":	"ConstValue",
+						"char_value":	"97"
+					}
+				}],
 			"var_decl_list":	[{
 					"node_name":	"NormalDecl",
 					"name_list_decl":	[{
 							"node_name":	"Identifier",
-							"id":	"i"
+							"id":	"iv"
 						}],
 					"type_decl":	{
 						"node_name":	"TypeDecl",
@@ -21,374 +82,88 @@
 							"decl_type":	"sys_integer"
 						}
 					}
-				}],
-			"call_decl_list":	[{
-					"node_name":	"CallDecl",
-					"func_decl":	{
-						"node_name":	"FunctionDecl",
-						"head":	{
-							"node_name":	"FunctionHead",
-							"func_name":	{
-								"node_name":	"Identifier",
-								"id":	"go"
-							},
-							"params":	[{
-									"node_name":	"ParaTypeList",
-									"para_type":	"val",
-									"para_list":	[{
-											"node_name":	"Identifier",
-											"id":	"a"
-										}],
-									"type":	{
-										"node_name":	"SimpleTypeDecl",
-										"decl_type":	"sys_integer"
-									}
-								}],
-							"ret":	{
+				}, {
+					"node_name":	"NormalDecl",
+					"name_list_decl":	[{
+							"node_name":	"Identifier",
+							"id":	"rv"
+						}],
+					"type_decl":	{
+						"node_name":	"TypeDecl",
+						"simple_decl_node":	{
+							"node_name":	"SimpleTypeDecl",
+							"decl_type":	"sys_real"
+						}
+					}
+				}, {
+					"node_name":	"NormalDecl",
+					"name_list_decl":	[{
+							"node_name":	"Identifier",
+							"id":	"bv"
+						}],
+					"type_decl":	{
+						"node_name":	"TypeDecl",
+						"simple_decl_node":	{
+							"node_name":	"SimpleTypeDecl",
+							"decl_type":	"sys_boolean"
+						}
+					}
+				}, {
+					"node_name":	"NormalDecl",
+					"name_list_decl":	[{
+							"node_name":	"Identifier",
+							"id":	"cv"
+						}],
+					"type_decl":	{
+						"node_name":	"TypeDecl",
+						"simple_decl_node":	{
+							"node_name":	"SimpleTypeDecl",
+							"decl_type":	"sys_char"
+						}
+					}
+				}, {
+					"node_name":	"NormalDecl",
+					"name_list_decl":	[{
+							"node_name":	"Identifier",
+							"id":	"p"
+						}],
+					"type_decl":	{
+						"node_name":	"TypeDecl",
+						"simple_decl_node":	{
+							"node_name":	"SimpleTypeDecl",
+							"decl_type":	"sys_integer"
+						}
+					}
+				}, {
+					"node_name":	"NormalDecl",
+					"name_list_decl":	[{
+							"node_name":	"Identifier",
+							"id":	"a"
+						}],
+					"type_decl":	{
+						"node_name":	"TypeDecl",
+						"array_decl_node":	{
+							"node_name":	"ArrayTypeDecl",
+							"range_decl":	{
 								"node_name":	"SimpleTypeDecl",
-								"decl_type":	"sys_integer"
-							}
-						},
-						"sub_routine":	{
-							"node_name":	"Routine",
-							"routine_head_node":	{
-								"node_name":	"RoutineHead"
+								"range_decl":	{
+									"node_name":	"RangeTypeDecl",
+									"lhs":	{
+										"node_name":	"Identifier",
+										"id":	"l"
+									},
+									"rhs":	{
+										"node_name":	"Identifier",
+										"id":	"r"
+									}
+								}
 							},
-							"routine_body_node":	{
-								"node_name":	"CompoundStatement",
-								"stmt_list":	[{
-										"node_name":	"Statement",
-										"label":	-1,
-										"body":	{
-											"node_name":	"NonLabelStatement",
-											"IF":	{
-												"node_name":	"IfStatement",
-												"judge":	{
-													"node_name":	"Expression",
-													"lhs":	{
-														"node_name":	"Expression",
-														"type":	"SINGLE",
-														"rhs":	{
-															"node_name":	"Expr",
-															"type":	"SINGLE",
-															"rhs":	{
-																"node_name":	"Term",
-																"type":	"SINGLE",
-																"rhs":	{
-																	"node_name":	"Factor",
-																	"name_factor":	{
-																		"node_name":	"Identifier",
-																		"id":	"a"
-																	}
-																}
-															}
-														}
-													},
-													"type":	"EQUAL",
-													"rhs":	{
-														"node_name":	"Expr",
-														"type":	"SINGLE",
-														"rhs":	{
-															"node_name":	"Term",
-															"type":	"SINGLE",
-															"rhs":	{
-																"node_name":	"Factor",
-																"const_factor":	{
-																	"node_name":	"ConstValue",
-																	"int_value":	1
-																}
-															}
-														}
-													}
-												},
-												"s1":	{
-													"node_name":	"Statement",
-													"label":	-1,
-													"body":	{
-														"node_name":	"NonLabelStatement",
-														"COMPOUND":	{
-															"node_name":	"CompoundStatement",
-															"stmt_list":	[{
-																	"node_name":	"Statement",
-																	"label":	-1,
-																	"body":	{
-																		"node_name":	"NonLabelStatement",
-																		"ASSIGN":	{
-																			"node_name":	"AssignStatement",
-																			"normal_assign":	{
-																				"node_name":	"NormalAssignment",
-																				"id":	{
-																					"node_name":	"Identifier",
-																					"id":	"go"
-																				},
-																				"value":	{
-																					"node_name":	"Expression",
-																					"type":	"SINGLE",
-																					"rhs":	{
-																						"node_name":	"Expr",
-																						"type":	"SINGLE",
-																						"rhs":	{
-																							"node_name":	"Term",
-																							"type":	"SINGLE",
-																							"rhs":	{
-																								"node_name":	"Factor",
-																								"const_factor":	{
-																									"node_name":	"ConstValue",
-																									"int_value":	1
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}]
-														}
-													}
-												},
-												"s2":	{
-													"node_name":	"Statement",
-													"label":	-1,
-													"body":	{
-														"node_name":	"NonLabelStatement",
-														"COMPOUND":	{
-															"node_name":	"CompoundStatement",
-															"stmt_list":	[{
-																	"node_name":	"Statement",
-																	"label":	-1,
-																	"body":	{
-																		"node_name":	"NonLabelStatement",
-																		"IF":	{
-																			"node_name":	"IfStatement",
-																			"judge":	{
-																				"node_name":	"Expression",
-																				"lhs":	{
-																					"node_name":	"Expression",
-																					"type":	"SINGLE",
-																					"rhs":	{
-																						"node_name":	"Expr",
-																						"type":	"SINGLE",
-																						"rhs":	{
-																							"node_name":	"Term",
-																							"type":	"SINGLE",
-																							"rhs":	{
-																								"node_name":	"Factor",
-																								"name_factor":	{
-																									"node_name":	"Identifier",
-																									"id":	"a"
-																								}
-																							}
-																						}
-																					}
-																				},
-																				"type":	"EQUAL",
-																				"rhs":	{
-																					"node_name":	"Expr",
-																					"type":	"SINGLE",
-																					"rhs":	{
-																						"node_name":	"Term",
-																						"type":	"SINGLE",
-																						"rhs":	{
-																							"node_name":	"Factor",
-																							"const_factor":	{
-																								"node_name":	"ConstValue",
-																								"int_value":	2
-																							}
-																						}
-																					}
-																				}
-																			},
-																			"s1":	{
-																				"node_name":	"Statement",
-																				"label":	-1,
-																				"body":	{
-																					"node_name":	"NonLabelStatement",
-																					"COMPOUND":	{
-																						"node_name":	"CompoundStatement",
-																						"stmt_list":	[{
-																								"node_name":	"Statement",
-																								"label":	-1,
-																								"body":	{
-																									"node_name":	"NonLabelStatement",
-																									"ASSIGN":	{
-																										"node_name":	"AssignStatement",
-																										"normal_assign":	{
-																											"node_name":	"NormalAssignment",
-																											"id":	{
-																												"node_name":	"Identifier",
-																												"id":	"go"
-																											},
-																											"value":	{
-																												"node_name":	"Expression",
-																												"type":	"SINGLE",
-																												"rhs":	{
-																													"node_name":	"Expr",
-																													"type":	"SINGLE",
-																													"rhs":	{
-																														"node_name":	"Term",
-																														"type":	"SINGLE",
-																														"rhs":	{
-																															"node_name":	"Factor",
-																															"const_factor":	{
-																																"node_name":	"ConstValue",
-																																"int_value":	1
-																															}
-																														}
-																													}
-																												}
-																											}
-																										}
-																									}
-																								}
-																							}]
-																					}
-																				}
-																			},
-																			"s2":	{
-																				"node_name":	"Statement",
-																				"label":	-1,
-																				"body":	{
-																					"node_name":	"NonLabelStatement",
-																					"COMPOUND":	{
-																						"node_name":	"CompoundStatement",
-																						"stmt_list":	[{
-																								"node_name":	"Statement",
-																								"label":	-1,
-																								"body":	{
-																									"node_name":	"NonLabelStatement",
-																									"ASSIGN":	{
-																										"node_name":	"AssignStatement",
-																										"normal_assign":	{
-																											"node_name":	"NormalAssignment",
-																											"id":	{
-																												"node_name":	"Identifier",
-																												"id":	"go"
-																											},
-																											"value":	{
-																												"node_name":	"Expression",
-																												"type":	"SINGLE",
-																												"rhs":	{
-																													"node_name":	"Expr",
-																													"lhs":	{
-																														"node_name":	"Expr",
-																														"type":	"SINGLE",
-																														"rhs":	{
-																															"node_name":	"Term",
-																															"type":	"SINGLE",
-																															"rhs":	{
-																																"node_name":	"Factor",
-																																"func_factor":	{
-																																	"node_name":	"FunctionCall",
-																																	"func_name":	{
-																																		"node_name":	"Identifier",
-																																		"id":	"go"
-																																	},
-																																	"args":	[{
-																																			"node_name":	"Expression",
-																																			"type":	"SINGLE",
-																																			"rhs":	{
-																																				"node_name":	"Expr",
-																																				"lhs":	{
-																																					"node_name":	"Expr",
-																																					"type":	"SINGLE",
-																																					"rhs":	{
-																																						"node_name":	"Term",
-																																						"type":	"SINGLE",
-																																						"rhs":	{
-																																							"node_name":	"Factor",
-																																							"name_factor":	{
-																																								"node_name":	"Identifier",
-																																								"id":	"a"
-																																							}
-																																						}
-																																					}
-																																				},
-																																				"type":	"MINUS",
-																																				"rhs":	{
-																																					"node_name":	"Term",
-																																					"type":	"SINGLE",
-																																					"rhs":	{
-																																						"node_name":	"Factor",
-																																						"const_factor":	{
-																																							"node_name":	"ConstValue",
-																																							"int_value":	1
-																																						}
-																																					}
-																																				}
-																																			}
-																																		}]
-																																}
-																															}
-																														}
-																													},
-																													"type":	"PLUS",
-																													"rhs":	{
-																														"node_name":	"Term",
-																														"type":	"SINGLE",
-																														"rhs":	{
-																															"node_name":	"Factor",
-																															"func_factor":	{
-																																"node_name":	"FunctionCall",
-																																"func_name":	{
-																																	"node_name":	"Identifier",
-																																	"id":	"go"
-																																},
-																																"args":	[{
-																																		"node_name":	"Expression",
-																																		"type":	"SINGLE",
-																																		"rhs":	{
-																																			"node_name":	"Expr",
-																																			"lhs":	{
-																																				"node_name":	"Expr",
-																																				"type":	"SINGLE",
-																																				"rhs":	{
-																																					"node_name":	"Term",
-																																					"type":	"SINGLE",
-																																					"rhs":	{
-																																						"node_name":	"Factor",
-																																						"name_factor":	{
-																																							"node_name":	"Identifier",
-																																							"id":	"a"
-																																						}
-																																					}
-																																				}
-																																			},
-																																			"type":	"MINUS",
-																																			"rhs":	{
-																																				"node_name":	"Term",
-																																				"type":	"SINGLE",
-																																				"rhs":	{
-																																					"node_name":	"Factor",
-																																					"const_factor":	{
-																																						"node_name":	"ConstValue",
-																																						"int_value":	2
-																																					}
-																																				}
-																																			}
-																																		}
-																																	}]
-																															}
-																														}
-																													}
-																												}
-																											}
-																										}
-																									}
-																								}
-																							}]
-																					}
-																				}
-																			}
-																		}
-																	}
-																}]
-														}
-													}
-												}
-											}
-										}
-									}]
+							"element_decl":	{
+								"node_name":	"TypeDecl",
+								"simple_decl_node":	{
+									"node_name":	"SimpleTypeDecl",
+									"decl_type":	"sys_integer"
+								}
 							}
 						}
 					}
@@ -407,7 +182,7 @@
 								"node_name":	"NormalAssignment",
 								"id":	{
 									"node_name":	"Identifier",
-									"id":	"i"
+									"id":	"iv"
 								},
 								"value":	{
 									"node_name":	"Expression",
@@ -420,31 +195,9 @@
 											"type":	"SINGLE",
 											"rhs":	{
 												"node_name":	"Factor",
-												"func_factor":	{
-													"node_name":	"FunctionCall",
-													"func_name":	{
-														"node_name":	"Identifier",
-														"id":	"go"
-													},
-													"args":	[{
-															"node_name":	"Expression",
-															"type":	"SINGLE",
-															"rhs":	{
-																"node_name":	"Expr",
-																"type":	"SINGLE",
-																"rhs":	{
-																	"node_name":	"Term",
-																	"type":	"SINGLE",
-																	"rhs":	{
-																		"node_name":	"Factor",
-																		"const_factor":	{
-																			"node_name":	"ConstValue",
-																			"int_value":	10
-																		}
-																	}
-																}
-															}
-														}]
+												"const_factor":	{
+													"node_name":	"ConstValue",
+													"int_value":	0
 												}
 											}
 										}
@@ -458,15 +211,236 @@
 					"label":	-1,
 					"body":	{
 						"node_name":	"NonLabelStatement",
-						"PROC":	{
-							"node_name":	"ProcStatement",
-							"sys_proc":	{
-								"node_name":	"SystemProcedure",
-								"id":	"WRITELN",
-								"arg_list":	[{
-										"node_name":	"Expression",
+						"FOR":	{
+							"node_name":	"ForStatement",
+							"id":	{
+								"node_name":	"Identifier",
+								"id":	"iv"
+							},
+							"start":	{
+								"node_name":	"Expression",
+								"type":	"SINGLE",
+								"rhs":	{
+									"node_name":	"Expr",
+									"type":	"SINGLE",
+									"rhs":	{
+										"node_name":	"Term",
 										"type":	"SINGLE",
 										"rhs":	{
+											"node_name":	"Factor",
+											"name_factor":	{
+												"node_name":	"Identifier",
+												"id":	"l"
+											}
+										}
+									}
+								}
+							},
+							"end":	{
+								"node_name":	"Expression",
+								"type":	"SINGLE",
+								"rhs":	{
+									"node_name":	"Expr",
+									"type":	"SINGLE",
+									"rhs":	{
+										"node_name":	"Term",
+										"type":	"SINGLE",
+										"rhs":	{
+											"node_name":	"Factor",
+											"name_factor":	{
+												"node_name":	"Identifier",
+												"id":	"r"
+											}
+										}
+									}
+								}
+							},
+							"type":	"to",
+							"statement":	{
+								"node_name":	"Statement",
+								"label":	-1,
+								"body":	{
+									"node_name":	"NonLabelStatement",
+									"COMPOUND":	{
+										"node_name":	"CompoundStatement",
+										"stmt_list":	[{
+												"node_name":	"Statement",
+												"label":	-1,
+												"body":	{
+													"node_name":	"NonLabelStatement",
+													"ASSIGN":	{
+														"node_name":	"AssignStatement",
+														"array_assign":	{
+															"node_name":	"ArrayAssignment",
+															"array_id":	{
+																"node_name":	"Identifier",
+																"id":	"a"
+															},
+															"index_expr":	{
+																"node_name":	"Expression",
+																"type":	"SINGLE",
+																"rhs":	{
+																	"node_name":	"Expr",
+																	"lhs":	{
+																		"node_name":	"Expr",
+																		"type":	"SINGLE",
+																		"rhs":	{
+																			"node_name":	"Term",
+																			"type":	"SINGLE",
+																			"rhs":	{
+																				"node_name":	"Factor",
+																				"name_factor":	{
+																					"node_name":	"Identifier",
+																					"id":	"l"
+																				}
+																			}
+																		}
+																	},
+																	"type":	"PLUS",
+																	"rhs":	{
+																		"node_name":	"Term",
+																		"type":	"SINGLE",
+																		"rhs":	{
+																			"node_name":	"Factor",
+																			"const_factor":	{
+																				"node_name":	"ConstValue",
+																				"int_value":	1
+																			}
+																		}
+																	}
+																}
+															},
+															"value_expr":	{
+																"node_name":	"Expression",
+																"type":	"SINGLE",
+																"rhs":	{
+																	"node_name":	"Expr",
+																	"lhs":	{
+																		"node_name":	"Expr",
+																		"type":	"SINGLE",
+																		"rhs":	{
+																			"node_name":	"Term",
+																			"type":	"SINGLE",
+																			"rhs":	{
+																				"node_name":	"Factor",
+																				"name_factor":	{
+																					"node_name":	"Identifier",
+																					"id":	"iv"
+																				}
+																			}
+																		}
+																	},
+																	"type":	"PLUS",
+																	"rhs":	{
+																		"node_name":	"Term",
+																		"type":	"SINGLE",
+																		"rhs":	{
+																			"node_name":	"Factor",
+																			"const_factor":	{
+																				"node_name":	"ConstValue",
+																				"int_value":	1
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}, {
+												"node_name":	"Statement",
+												"label":	-1,
+												"body":	{
+													"node_name":	"NonLabelStatement",
+													"PROC":	{
+														"node_name":	"ProcStatement",
+														"sys_proc":	{
+															"node_name":	"SystemProcedure",
+															"id":	"WRITELN",
+															"arg_list":	[{
+																	"node_name":	"Expression",
+																	"type":	"SINGLE",
+																	"rhs":	{
+																		"node_name":	"Expr",
+																		"type":	"SINGLE",
+																		"rhs":	{
+																			"node_name":	"Term",
+																			"type":	"SINGLE",
+																			"rhs":	{
+																				"node_name":	"Factor",
+																				"at_factor":	{
+																					"node_name":	"AtOperation",
+																					"array_id":	{
+																						"node_name":	"Identifier",
+																						"id":	"a"
+																					},
+																					"index_expr":	{
+																						"node_name":	"Expression",
+																						"type":	"SINGLE",
+																						"rhs":	{
+																							"node_name":	"Expr",
+																							"lhs":	{
+																								"node_name":	"Expr",
+																								"type":	"SINGLE",
+																								"rhs":	{
+																									"node_name":	"Term",
+																									"type":	"SINGLE",
+																									"rhs":	{
+																										"node_name":	"Factor",
+																										"name_factor":	{
+																											"node_name":	"Identifier",
+																											"id":	"l"
+																										}
+																									}
+																								}
+																							},
+																							"type":	"PLUS",
+																							"rhs":	{
+																								"node_name":	"Term",
+																								"type":	"SINGLE",
+																								"rhs":	{
+																									"node_name":	"Factor",
+																									"const_factor":	{
+																										"node_name":	"ConstValue",
+																										"int_value":	1
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}]
+														}
+													}
+												}
+											}]
+									}
+								}
+							}
+						}
+					}
+				}, {
+					"node_name":	"Statement",
+					"label":	-1,
+					"body":	{
+						"node_name":	"NonLabelStatement",
+						"ASSIGN":	{
+							"node_name":	"AssignStatement",
+							"array_assign":	{
+								"node_name":	"ArrayAssignment",
+								"array_id":	{
+									"node_name":	"Identifier",
+									"id":	"a"
+								},
+								"index_expr":	{
+									"node_name":	"Expression",
+									"type":	"SINGLE",
+									"rhs":	{
+										"node_name":	"Expr",
+										"lhs":	{
 											"node_name":	"Expr",
 											"type":	"SINGLE",
 											"rhs":	{
@@ -476,12 +450,44 @@
 													"node_name":	"Factor",
 													"name_factor":	{
 														"node_name":	"Identifier",
-														"id":	"i"
+														"id":	"l"
 													}
 												}
 											}
+										},
+										"type":	"PLUS",
+										"rhs":	{
+											"node_name":	"Term",
+											"type":	"SINGLE",
+											"rhs":	{
+												"node_name":	"Factor",
+												"const_factor":	{
+													"node_name":	"ConstValue",
+													"int_value":	1
+												}
+											}
 										}
-									}]
+									}
+								},
+								"value_expr":	{
+									"node_name":	"Expression",
+									"type":	"SINGLE",
+									"rhs":	{
+										"node_name":	"Expr",
+										"type":	"SINGLE",
+										"rhs":	{
+											"node_name":	"Term",
+											"type":	"SINGLE",
+											"rhs":	{
+												"node_name":	"Factor",
+												"const_factor":	{
+													"node_name":	"ConstValue",
+													"int_value":	8
+												}
+											}
+										}
+									}
+								}
 							}
 						}
 					}
