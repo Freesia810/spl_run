@@ -28,12 +28,12 @@ set(
     ${CMAKE_SOURCE_DIR}/src/generator/IRGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/AbstractSyntaxTree.cc
     ${CMAKE_SOURCE_DIR}/src/Visualization.cc
-    ${CMAKE_SOURCE_DIR}/src/demo.cc
+    ${CMAKE_SOURCE_DIR}/src/main.cc
 )
 
-add_executable(demo ${SOURCES_FILE})
-target_include_directories(demo PUBLIC /usr/include/llvm-14/ /usr/include/llvm-c-14/)
-target_link_directories(demo PUBLIC /usr/lib/llvm-14/lib/ ${CMAKE_SOURCE_DIR}/lib)
-target_link_libraries(demo LLVM spl_parser cjson)
+add_executable(spl_run ${SOURCES_FILE})
+target_include_directories(spl_run PUBLIC /usr/include/llvm-14/ /usr/include/llvm-c-14/)
+target_link_directories(spl_run PUBLIC /usr/lib/llvm-14/lib/ ${CMAKE_SOURCE_DIR}/lib)
+target_link_libraries(spl_run LLVM spl_parser cjson)
 find_library(LEX_LIB l)
-target_link_libraries(demo ${LEX_LIB})
+target_link_libraries(spl_run ${LEX_LIB})

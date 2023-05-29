@@ -1,17 +1,8 @@
 program hello;
 var	
-	k : integer;
-
-procedure inner2(var aa : integer);
-begin
-	aa := 200;
-end
-;
+	c : array [1..6] of array [2..5] of integer;
 
 begin
-	k := 100;
-	writeln(k);
-	inner2(k);
-	writeln(k);
+	
 end
 .

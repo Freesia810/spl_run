@@ -1,3 +1,31 @@
+# Command
+```
+./spl-run -arg1 -arg2 ... file1 file2 ... [target-triple] [outputs_dir]
+```
+## args
+`-json`: Generate Abstract Syntax Tree Json
+`-ll`: Generate LLVM Module File
+
+`-bc`: Generate LLVM Bitcode File
+
+`-s`: Generate Assemble File
+
+`-o`: Generate Object File
+
+if no args, the default arg list will be: `-ll -bc -s -o`
+
+## target-triple
+eg: --target=x86_64-linux-gnu --target=armv7a-linux-android
+
+if target-triple is not set, the final target will be your machine target
+
+spl-run can't promise the validity of crossing-compile because of LLVM
+
+## outputs
+if outputs_dir is not set, the default config will be the current directory (cwd)
+
+# SPL Language
+## Fix
 添加`endif`，解决移进-规约冲突
 ```yacc
 if_stmt ： IF  expression  THEN  stmt  else_clause ENDIF
@@ -11,7 +39,7 @@ routine_part:   routine_part  function_decl
             | ε
 ```
 
-SPL语法:
+## Grammar
 ```grammar
 program ： program_head  routine  DOT
 program_head ： PROGRAM  ID  SEMI
