@@ -4,6 +4,7 @@
 ```
 ## args
 `-json`: Generate Abstract Syntax Tree Json
+
 `-ll`: Generate LLVM Module File
 
 `-bc`: Generate LLVM Bitcode File
