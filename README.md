@@ -1,8 +1,18 @@
-# Command
+# SPL RUN
+A linux simple compiler for SPL Language
+
+## Dependencies
+- LLVM 14.0
+- Bison (3.8.2?)
+- Flex  (2.6.4?)
+- CMake 3.13 +
+- cJSON (provided in lib/)
+
+## Command
 ```
 ./spl-run -arg1 -arg2 ... file1 file2 ... --target=[target-triple] --output=[outputs_dir]
 ```
-## args
+### args
 `-json`: Generate Abstract Syntax Tree Json
 
 `-ll`: Generate LLVM Module File
@@ -15,17 +25,17 @@
 
 if no args, the default arg list will be: `-json -ll -bc -s -o`
 
-## target-triple
+### target-triple
 eg: --target=x86_64-linux-gnu --target=armv7a-linux-android
 
 if target-triple is not set, the final target will be your machine target
 
 spl-run can't promise the validity of crossing-compile because of LLVM
 
-## outputs
+### outputs
 if outputs_dir is not set, the default config will be the current directory (cwd)
 
-# Run & Test
+## Run & Test
 ```bash
 # compile (Promise llvm 14.0 should be in /usr/include/ and /usr/lib/ or you should modify CMakeLists by yourself)
 ./auto.sh
@@ -37,8 +47,8 @@ if outputs_dir is not set, the default config will be the current directory (cwd
 cd test && ./run_test.sh
 ```
 
-# SPL Language
-## Fix
+## SPL Language
+### Fix
 添加`endif`，解决移进-规约冲突
 ```yacc
 if_stmt ： IF  expression  THEN  stmt  else_clause ENDIF
@@ -52,7 +62,7 @@ routine_part:   routine_part  function_decl
             | ε
 ```
 
-## Grammar
+### Grammar
 ```grammar
 program ： program_head  routine  DOT
 program_head ： PROGRAM  ID  SEMI
