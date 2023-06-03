@@ -161,4 +161,6 @@ public:
     }
 
     llvm::Constant* GetDefaultValue(llvm::Type* this_type);
+
+    void PrintError(const char* str, std::string arg = "") { std::cerr << "SPL_RUN[ERROR]: " << str << arg << std::endl; exit(0); }
 };

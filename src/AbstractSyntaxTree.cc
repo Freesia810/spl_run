@@ -1033,8 +1033,7 @@ llvm::Type* SimpleTypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
         }
         break;
     case SimpleTypeDecl::RANGE_TYPE:
-        std::cerr << "Unsupported variable type decl\n";
-        assert(false);
+        ir->PrintError("Unsupported variable range type decl");
         break;
     default:
         break;
@@ -1051,8 +1050,7 @@ llvm::Type* TypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
     case ARRAY:
         {
             if(this->decl.array_decl->range_decl->flag != SimpleTypeDecl::RANGE_TYPE){
-                std::cerr << "Unsupported array range decl\n";
-                assert(false);
+                ir->PrintError("Unsupported array range decl");
             }
 
             cc = new ArrayContext();
@@ -1074,7 +1072,7 @@ llvm::Type* TypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
                 }
                 else{
                     //throw
-                    assert(false);
+                    ir->PrintError("Unsupported range type");
                 }
                 break;
             case RangeTypeDecl::NEG_POS:
@@ -1087,7 +1085,7 @@ llvm::Type* TypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
                 }
                 else{
                     //throw
-                    assert(false);
+                    ir->PrintError("Unsupported range type");
                 }
                 break;
             case RangeTypeDecl::NEG_NEG:
@@ -1100,7 +1098,7 @@ llvm::Type* TypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
                 }
                 else{
                     //throw
-                    assert(false);
+                    ir->PrintError("Unsupported range type");
                 }
                 break;
             case RangeTypeDecl::NAME_NAME:
@@ -1143,7 +1141,7 @@ llvm::Type* TypeDecl::getLLVMType(IRGenerator* ir, CompoundContext*& cc){
 
                     if(rc->field_map.find(this_name) != rc->field_map.end()){
                         //throw
-                        assert(false);
+                        ir->PrintError("Unsupported range type", this_name);
                     }
                     rc->field_map.insert(std::pair<std::string, uint64_t>(this_name, index++));
                     rc->context_map.insert(std::pair<std::string, CompoundContext*>(this_name, this_type_context));
@@ -1548,7 +1546,7 @@ llvm::Value* Factor::getLLVMValue(IRGenerator* ir){
             return ir->GetBuilder().CreateNot(this->factor.minus_factor->factor->getLLVMValue(ir), "TMP_NOT");
         }
         else{
-            assert(false);
+            ir->PrintError("'Not' should be int1 type");
         }
         break;
     case Factor::MINUS:
@@ -1561,7 +1559,7 @@ llvm::Value* Factor::getLLVMValue(IRGenerator* ir){
                 this->factor.minus_factor->factor->getLLVMValue(ir), "TMP_SUB");
         }
         else{
-            assert(false);
+            ir->PrintError("'Not' should be int or real type");
         }
         break;
     default:
@@ -1857,7 +1855,9 @@ void CaseStatement::generateIR(IRGenerator* ir){
 void GotoStatement::generateIR(IRGenerator* ir){
     auto target = ir->FindLabel(std::to_string(this->target_label));
 
-    assert(target != nullptr);
+    if(target == nullptr){
+        ir->PrintError("Undeclared label");
+    }
 
     ir->GetBuilder().CreateBr(target);
 }
@@ -1910,7 +1910,7 @@ void ProcStatement::generateIR(IRGenerator* ir){
                     format += "%lf";
                 }
                 else{
-                    assert(false);
+                    ir->PrintError("Unknown var type");
                 }
                 params.push_back(val);
             }
@@ -1951,7 +1951,7 @@ void ProcStatement::generateIR(IRGenerator* ir){
                 format += "%lf";
             }
             else{
-                assert(false);
+                ir->PrintError("Undeclared read type");
             }
             params.push_back(ir->FindSymbolValue(arg->buffer));
             params.insert(params.begin(), ir->GetBuilder().CreateGlobalStringPtr(format));
@@ -1964,7 +1964,9 @@ void ProcStatement::generateIR(IRGenerator* ir){
 }
 
 llvm::Value* SysFuncCall::getLLVMValue(IRGenerator* ir){
-    assert(ARRAY_SIZE(this->args) == 1);
+    if(ARRAY_SIZE(this->args) != 1){
+        ir->PrintError("Param must be 1");
+    }
 
     auto param = this->args[0];
     auto val = param.getLLVMValue(ir);

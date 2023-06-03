@@ -7,9 +7,7 @@ CallContext* IRGenerator::FindCallContext(const char* call_name){
         return gb_iter->second;
     }
 
-    //not found, throw todo
-    assert(false);
-    throw ;
+    PrintError("Undeclared Symbol: ", call_name);
     return nullptr;
 }
 
@@ -29,8 +27,7 @@ std::pair<llvm::Type*, CompoundContext*> IRGenerator::FindVarContext(const char*
     }
 
     //not found, throw todo
-    assert(false);
-    throw ;
+    PrintError("Undeclared Symbol: ", var_name);
     return std::pair<llvm::Type*, CompoundContext*>();
 }
 
@@ -50,8 +47,7 @@ std::pair<llvm::Type*, CompoundContext*> IRGenerator::FindTypeContext(const char
     }
 
     //not found, throw todo
-    assert(false);
-    throw ;
+    PrintError("Undeclared Symbol: ", type_name);
     return std::pair<llvm::Type*, CompoundContext*>();
 }
 
@@ -69,8 +65,7 @@ llvm::Value* IRGenerator::FindSymbolValue(const char* symbol){
     }
 
     //throw todo
-    assert(false);
-    throw ;
+    PrintError("Undeclared Symbol: ", symbol);
     return nullptr;
 }
 

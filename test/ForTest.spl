@@ -1,0 +1,15 @@
+program ForTest;
+const
+    i=10;
+    c='a';
+
+var
+    j:integer;
+
+begin
+    for j:=1 to i do
+    begin 
+        writeln(c);
+    end;
+end
+.

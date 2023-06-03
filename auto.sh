@@ -7,4 +7,5 @@ mkdir build
 pushd build
 cmake ..
 make
+cp spl_run ../spl_run
 popd

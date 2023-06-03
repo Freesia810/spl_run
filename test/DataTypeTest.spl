@@ -1,0 +1,27 @@
+program InTest;
+const 
+    int_c=1;
+    char_c='c';
+    real_c=1.1;
+    bool_c=true;
+var
+    int_v:integer;
+    char_v:char;
+    real_v:real;
+    bool_v:boolean;
+
+begin
+    int_v:=2;
+    char_v:='v';
+    real_v:=2.2;
+    bool_v:=false;
+    writeln(int_c);
+    writeln(int_v);
+    writeln(char_c);
+    writeln(char_v);
+    writeln(real_c);
+    writeln(real_v);
+    writeln(bool_c);
+    writeln(bool_v);
+end
+.

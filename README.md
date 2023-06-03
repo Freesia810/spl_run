@@ -1,6 +1,6 @@
 # Command
 ```
-./spl-run -arg1 -arg2 ... file1 file2 ... [target-triple] [outputs_dir]
+./spl-run -arg1 -arg2 ... file1 file2 ... --target=[target-triple] --output=[outputs_dir]
 ```
 ## args
 `-json`: Generate Abstract Syntax Tree Json
@@ -13,7 +13,7 @@
 
 `-o`: Generate Object File
 
-if no args, the default arg list will be: `-ll -bc -s -o`
+if no args, the default arg list will be: `-json -ll -bc -s -o`
 
 ## target-triple
 eg: --target=x86_64-linux-gnu --target=armv7a-linux-android
@@ -24,6 +24,18 @@ spl-run can't promise the validity of crossing-compile because of LLVM
 
 ## outputs
 if outputs_dir is not set, the default config will be the current directory (cwd)
+
+# Run & Test
+```bash
+# compile (Promise llvm 14.0 should be in /usr/include/ and /usr/lib/ or you should modify CMakeLists by yourself)
+./auto.sh
+
+# run
+./spl-run -arg1 -arg2 ... file1 file2 ... [target-triple] [outputs_dir]
+
+# test
+cd test && ./run_test.sh
+```
 
 # SPL Language
 ## Fix

@@ -1,0 +1,27 @@
+program ArrayTest;
+const
+    l = 1;
+    r = 6;
+var
+    iv : integer;
+    cv : char;
+    rv : real;
+    a : array[l..r] of integer;
+    b : array[l..r] of char;
+    c : array[l..r] of real;
+begin
+    iv := 0;
+    cv := 'a';
+    rv:=1.0;
+    for iv := l to r do
+    begin
+        a[iv] := iv;
+        b[iv] := cv;
+        c[iv] :=rv;
+    end;
+    for iv := l to r do
+    begin
+        writeln(a[iv]);
+    end;
+end
+.
