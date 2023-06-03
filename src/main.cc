@@ -131,6 +131,15 @@ int main(int argc,char *argv[]){
             t_generator->GenerateObjectFile((output + "/" + filename + ".o").c_str());
         }
     }
+
+    // llvm::SMDiagnostic error;
+    // llvm::LLVMContext context;
+    // std::unique_ptr<llvm::Module> m = llvm::parseIRFile("../Prime.ll", error, context);
+    // auto t_generator = std::make_unique<TargetGenerator>(m.get());
+    // t_generator->Init();
+    // t_generator->GenerateBitcodeFile("Prime.bc");
+    // t_generator->GenerateAssemblyFile("Prime.s");
+    // t_generator->GenerateObjectFile("Prime.o");
     
     return 0;
 }

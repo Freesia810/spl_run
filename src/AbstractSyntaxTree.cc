@@ -1380,6 +1380,7 @@ void Statement::generateIR(IRGenerator* ir){
     if(this->label != -1){
         //start of the block
         auto this_block = llvm::BasicBlock::Create(ir->GetContext(), std::string("label ").append(std::to_string(this->label)), ir->GetCurrentFunction());
+        ir->GetBuilder().CreateBr(this_block);
         ir->GetBuilder().SetInsertPoint(this_block);
         ir->AddLabel(std::to_string(this->label), this_block);
     }
