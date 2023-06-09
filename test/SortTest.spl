@@ -1,0 +1,44 @@
+program sort;
+
+const 
+    l=0;
+    r=10;
+
+var
+    arr:array[l..r] of integer; 
+    max:integer;
+    temp_1:integer;
+    temp_2:integer;
+    i:integer;
+    j:integer;
+    x:integer;
+
+begin  
+    for i:=l to r-1 do 
+    begin 
+        read(x);
+        arr[i] := x;
+    end;
+
+    for i:=l to r-1 do 
+    begin  
+        max:=-1;
+        for j:=i to r-1 do 
+        begin  
+            if arr[j]>max then
+            begin  
+                max:=arr[j];
+                temp_2:=j;
+            end
+            endif;
+        end;  
+        temp_1:=arr[temp_2];
+        arr[temp_2]:=arr[i];
+        arr[i]:=temp_1;
+    end;
+    for i:=l to r-1 do  
+    begin  
+        writeln(arr[i]);
+    end;
+end
+.

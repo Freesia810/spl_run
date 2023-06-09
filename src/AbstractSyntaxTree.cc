@@ -1953,8 +1953,15 @@ void ProcStatement::generateIR(IRGenerator* ir){
             else{
                 ir->PrintError("Undeclared read type");
             }
+            auto formatVar = new llvm::GlobalVariable(*(ir->GetModulePt()), 
+                llvm::ArrayType::get(ir->GetBuilder().getInt8Ty(), format.size() + 1), true, 
+                llvm::GlobalValue::ExternalLinkage, 
+                llvm::ConstantDataArray::getString(ir->GetContext(), format.c_str()), ".str");
+            auto zero = llvm::Constant::getNullValue(ir->GetBuilder().getInt32Ty());
+            llvm::Constant* indices[] = {zero, zero};
+            auto varRef = llvm::ConstantExpr::getGetElementPtr(formatVar->getType()->getPointerElementType(), formatVar, indices);
+            params.insert(params.begin(), varRef);
             params.push_back(ir->FindSymbolValue(arg->buffer));
-            params.insert(params.begin(), ir->GetBuilder().CreateGlobalStringPtr(format));
             ir->GetBuilder().CreateCall(ir->GetScanf(), params, "scanf");
         }
         break;
